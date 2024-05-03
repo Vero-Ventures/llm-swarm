@@ -14,7 +14,7 @@ You can use any LLM you wish, but GPT4 is recommended. To run the script, follow
 - **Execute the Script**: Run `python main.py` and input your idea.
 
 ## Details & Explanation
-- **Running the Script**: Execute `python main.py`` and input your idea when prompted. The script will leverage the CrewAI framework to process the idea and generate a landing page.
+- **Running the Script**: Execute `python main.py`` and input your idea when prompted. The script will leverage the CrewAI framework to process the idea and write code.
 - **Key Components**:
   - `./main.py`: Main script file.
   - `./tasks.py`: Main file with the tasks prompts.
