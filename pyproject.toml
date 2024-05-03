@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "llm-swarm"
+version = "0.1.0"
+description = ""
+authors = ["Terence Grigoruk <terence.grigoruk@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = ">=3.11,<=3.13"
+python-dotenv = "^1.0.0"
+crewai = "^0.28.8"
+langchain-anthropic = "^0.1.11"
+langchain-groq = "^0.1.3"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
