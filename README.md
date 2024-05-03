@@ -6,6 +6,20 @@ This project proposes an ambitious framework, powered by AI, to revolutionize so
 
 - The LLM swarm will initially focus on building software using Python and TypeScript.
 
+## Running the Script
+You can use any LLM you wish, but GPT4 is recommended. To run the script, follow these steps:
+
+- **Configure Environment**: Copy ``.env.example` and set up the environment variables
+- **Install Dependencies**: Run `poetry install --no-root`.
+- **Execute the Script**: Run `python main.py` and input your idea.
+
+## Details & Explanation
+- **Running the Script**: Execute `python main.py`` and input your idea when prompted. The script will leverage the CrewAI framework to process the idea and generate a landing page.
+- **Key Components**:
+  - `./main.py`: Main script file.
+  - `./tasks.py`: Main file with the tasks prompts.
+  - `./agents.py`: Main file with the agents creation.
+
 **Framework Capabilities:**
 
 - **Autonomous Tasks:** Perform a wide range of software engineering activities including:
