@@ -2,6 +2,7 @@ from textwrap import dedent
 from crewai import Agent
 from langchain_openai import ChatOpenAI
 from langchain_anthropic import ChatAnthropic
+from langchain_groq import ChatGroq
 import os
 from dotenv import load_dotenv
 from langchain_community.llms import Ollama, OpenAI
@@ -22,51 +23,54 @@ chosen_llm = ChatAnthropic(model="claude-3-haiku-20240307", max_tokens=4096)
 # cloud model, decent
 # chosen_llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7, max_tokens=4096)
 # cloud model, best
-# chosen_llm = ChatOpenAI(model_name="gpt-4", temperature=0.7, max_tokens=4096)
+# chosen_llm = ChatOpenAI(model_name="gpt-4-turbo-2024-04-09", temperature=0.5, max_tokens=4096)
+# cloud mode, fastest
+# chosen_llm = ChatGroq(model="llama3-8b-8192", temperature=0.5, max_tokens=4096)
 
 
-class GameAgents:
-    def senior_engineer_agent(self):
+class RefactoringAgents:
+    def senior_refactoring_engineer_agent(self):
         return Agent(
-            role="Senior Software Engineer",
-            goal="Create software as needed",
+            role="Senior Refactoring Engineer",
+            goal="Refactor software functions to improve efficiency and readability",
             backstory=dedent(
                 """\
-				You are a Senior Software Engineer at a leading tech think tank.
-				Your expertise in programming in python. and do your best to
-				produce perfect code."""
+                You are a Senior Software Engineer with a deep understanding of
+                software design patterns and best practices in Python. Your task
+                is to refactor code and implement documentation, aiming to enhance performance and maintainability
+                without altering the core functionality."""
             ),
             allow_delegation=False,
             verbose=True,
             llm=chosen_llm,
         )
 
-    def qa_engineer_agent(self):
+    def qa_refactoring_engineer_agent(self):
         return Agent(
-            role="Software Quality Control Engineer",
-            goal="create prefect code, by analizing the code that is given for errors",
+            role="Refactoring Quality Assurance Engineer",
+            goal="Review refactored code for syntactic and logical correctness",
             backstory=dedent(
                 """\
-				You are a software engineer that specializes in checking code
-  			for errors. You have an eye for detail and a knack for finding
-				hidden bugs.
-  			You check for missing imports, variable declarations, mismatched
-				brackets and syntax errors.
-  			You also check for security vulnerabilities, and logic errors."""
+                You are a meticulous software quality engineer specialized in
+                the post-refactoring review. You scrutinize refactored code for
+                syntax errors, possible regressions, and maintainability, ensuring
+                the changes do not introduce new bugs."""
             ),
             allow_delegation=False,
             verbose=True,
             llm=chosen_llm,
         )
 
-    def chief_qa_engineer_agent(self):
+    def chief_qa_refactoring_engineer_agent(self):
         return Agent(
-            role="Chief Software Quality Control Engineer",
-            goal="Ensure that the code does the job that it is supposed to do",
+            role="Chief Refactoring Quality Assurance Engineer",
+            goal="Oversee the entire refactoring process and confirm functionality",
             backstory=dedent(
                 """\
-				You feel that programmers always do only half the job, so you are
-				super dedicate to make high quality code."""
+                Leading the quality assurance for refactoring, you ensure that
+                every piece of refactored code fulfills its intended functionality.
+                You oversee the integration and testing phases, ensuring high-quality
+                standards and seamless functionality across all modules."""
             ),
             allow_delegation=True,
             verbose=True,

@@ -3,53 +3,61 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from crewai import Crew
+import os
+from agents import RefactoringAgents
+from tasks import RefactoringTasks
 
-from tasks import GameTasks
-from agents import GameAgents
-
-tasks = GameTasks()
-agents = GameAgents()
-
-print("## Welcome to the Game Crew")
-print("-------------------------------")
-game = input("What is the game you would like to build? What will be the mechanics?\n")
+# Initialize agents and tasks
+agents = RefactoringAgents()
+tasks = RefactoringTasks()
 
 # Create Agents
-senior_engineer_agent = agents.senior_engineer_agent()
-qa_engineer_agent = agents.qa_engineer_agent()
-chief_qa_engineer_agent = agents.chief_qa_engineer_agent()
+senior_refactoring_engineer = agents.senior_refactoring_engineer_agent()
+qa_refactoring_engineer = agents.qa_refactoring_engineer_agent()
+chief_qa_refactoring_engineer = agents.chief_qa_refactoring_engineer_agent()
 
-# Create Tasks
-code_game = tasks.code_task(senior_engineer_agent, game)
-review_game = tasks.review_task(qa_engineer_agent, game)
-approve_game = tasks.evaluate_task(chief_qa_engineer_agent, game)
+# Welcome message
+print("## Welcome to the Refactoring Crew")
+print("-----------------------------------")
 
-# Create Crew responsible for Copy
-crew = Crew(
-    agents=[senior_engineer_agent, qa_engineer_agent, chief_qa_engineer_agent],
-    tasks=[code_game, review_game, approve_game],
-    verbose=True,
-)
+# Directory setup
+input_dir = 'test_input'
+output_dir = 'test_output'
 
-game = crew.kickoff()
+# Ensure output directory exists
+os.makedirs(output_dir, exist_ok=True)
 
+# Process each file in the input directory
+for filename in os.listdir(input_dir):
+    if filename.endswith(".py"):  # Process Python files only
+        file_path = os.path.join(input_dir, filename)
 
-# Print results
+        # Read the input file
+        with open(file_path, 'r') as file:
+            code_content = file.read()
+
+        # Create Tasks with the read code content
+        refactor_task = tasks.refactoring_task(senior_refactoring_engineer, code_content)
+        qa_review_task = tasks.qa_review_task(qa_refactoring_engineer, code_content)
+        consistency_check_task = tasks.consistency_check_task(chief_qa_refactoring_engineer, code_content)
+
+        output_path = os.path.join(output_dir, filename)
+
+        # Create Crew responsible for Refactoring
+        crew = Crew(
+            agents=[senior_refactoring_engineer, qa_refactoring_engineer, chief_qa_refactoring_engineer],
+            tasks=[refactor_task, qa_review_task, consistency_check_task],
+            verbose=True,
+        )
+
+        # Kickoff the refactoring process
+        result = crew.kickoff(inputs={'code': code_content})
+
+        # Save the refactored code to the output file
+        with open(output_path, "w") as output_file:
+            output_file.write(result)
+            print(f"\nRefactored code for {filename} saved to {output_path}")
+
 print("\n\n########################")
-print("## Completed Game")
+print("## Refactoring Completed")
 print("########################\n")
-print("final code for the game going to file game.py")
-
-# strip the markdown formatting from the start "```python" if it exists
-if game.startswith("```python"):
-    game = game[9:]
-
-# strip the markdown formatting from the end ``` if it exists, and any text after it,
-# in case the llm added extra text
-if "```" in game:
-    game = game[: game.index("```")]
-
-# Save the game code to a file
-with open("game.py", "w") as f:
-    f.write(game)
-    print("\n\nGame code saved to game.py")
