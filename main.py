@@ -1,5 +1,7 @@
-from crewai import Crew
 import os
+
+from crewai import Crew
+
 from agents import RefactoringAgents
 from tasks import RefactoringTasks
 from utils.code_cleaner import clean_python_code
@@ -18,8 +20,8 @@ print("## Welcome to the Refactoring Crew")
 print("-----------------------------------")
 
 # Directory setup
-input_dir = 'test_input'
-output_dir = 'test_output'
+input_dir = "test_input"
+output_dir = "test_output"
 
 # Ensure output directory exists
 os.makedirs(output_dir, exist_ok=True)
@@ -30,25 +32,39 @@ for filename in os.listdir(input_dir):
         file_path = os.path.join(input_dir, filename)
 
         # Read the input file
-        with open(file_path, 'r') as file:
+        with open(file_path, "r") as file:
             code_content = file.read()
 
         # Create Tasks with the read code content
-        refactor_task = tasks.refactoring_task(senior_refactoring_engineer, code_content)
+        refactor_task = tasks.refactoring_task(
+            senior_refactoring_engineer,
+            code_content,
+        )
         qa_review_task = tasks.qa_review_task(qa_refactoring_engineer, code_content)
-        consistency_check_task = tasks.consistency_check_task(chief_qa_refactoring_engineer, code_content)
+        consistency_check_task = tasks.consistency_check_task(
+            chief_qa_refactoring_engineer,
+            code_content,
+        )
 
         output_path = os.path.join(output_dir, filename)
 
         # Create Crew responsible for Refactoring
         crew = Crew(
-            agents=[senior_refactoring_engineer, qa_refactoring_engineer, chief_qa_refactoring_engineer],
-            tasks=[refactor_task, qa_review_task, consistency_check_task],
+            agents=[
+                senior_refactoring_engineer,
+                qa_refactoring_engineer,
+                chief_qa_refactoring_engineer,
+            ],
+            tasks=[
+                refactor_task,
+                qa_review_task,
+                consistency_check_task,
+            ],
             verbose=True,
         )
 
         # Kickoff the refactoring process
-        result = crew.kickoff(inputs={'code': code_content})
+        result = crew.kickoff(inputs={"code": code_content})
 
         # Extract the code only
         result = clean_python_code(result)

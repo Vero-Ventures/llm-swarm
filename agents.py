@@ -1,12 +1,12 @@
-from textwrap import dedent
-from crewai import Agent
-from langchain_openai import ChatOpenAI
-from langchain_anthropic import ChatAnthropic
-from langchain_groq import ChatGroq
 import os
-from dotenv import load_dotenv
-from langchain_community.llms import Ollama, OpenAI
+from textwrap import dedent
 
+from crewai import Agent
+from dotenv import load_dotenv
+from langchain_anthropic import ChatAnthropic
+from langchain_community.llms import Ollama, OpenAI
+from langchain_groq import ChatGroq
+from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
