@@ -6,6 +6,7 @@ from crewai import Crew
 import os
 from agents import RefactoringAgents
 from tasks import RefactoringTasks
+from utils.code_cleaner import clean_python_code
 
 # Initialize agents and tasks
 agents = RefactoringAgents()
@@ -52,6 +53,9 @@ for filename in os.listdir(input_dir):
 
         # Kickoff the refactoring process
         result = crew.kickoff(inputs={'code': code_content})
+
+        # Extract the code only
+        result = clean_python_code(result)
 
         # Save the refactored code to the output file
         with open(output_path, "w") as output_file:
