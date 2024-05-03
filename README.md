@@ -10,12 +10,8 @@ This project proposes an ambitious framework, powered by AI, to revolutionize so
 You can use any LLM you wish, but GPT4 is recommended. To run the script, follow these steps:
 
 - **Configure Environment**: Copy ``.env.example` and set up the environment variables
-- **Install Dependencies**: Run 
-  ```
-    pip install python-dotenv
-    pip install langchain langchain-openai langchain-anthropic langchain-groq
-    pip install crewai
-  ```
+- **Install Dependencies**: Run `poetry install --no-root`.
+- **Execute the Script**: Run `python main.py
 
 - **Execute the Script**: Run `python main.py` and input your idea.
 
