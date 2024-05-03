@@ -1,4 +1,5 @@
 import os
+import time
 
 from crewai import Crew
 
@@ -18,6 +19,7 @@ chief_qa_refactoring_engineer = agents.chief_qa_refactoring_engineer_agent()
 # Welcome message
 print("## Welcome to the Refactoring Crew")
 print("-----------------------------------")
+start_time = time.perf_counter()
 
 # Directory setup
 input_dir = "test_input"
@@ -74,6 +76,10 @@ for filename in os.listdir(input_dir):
             output_file.write(result)
             print(f"\nRefactored code for {filename} saved to {output_path}")
 
+end_time = time.perf_counter()
+
+
 print("\n\n########################")
 print("## Refactoring Completed")
+print(f"## Time taken: {end_time - start_time:.2f} seconds")
 print("########################\n")
