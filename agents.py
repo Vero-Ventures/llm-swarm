@@ -15,9 +15,10 @@ load_dotenv()
 # local model, not smart but fast
 # chosen_llm = Ollama(model="phi3")
 # local model, decent
-# chosen_llm = Ollama(model="llama3")
+chosen_llm = Ollama(model="llama3")
+deepseek = Ollama(model="deepseek-coder:6.7b")
 # cloud model, decent
-chosen_llm = ChatAnthropic(model="claude-3-haiku-20240307", max_tokens=4096)
+# chosen_llm = ChatAnthropic(model="claude-3-haiku-20240307", max_tokens=4096)
 # cloud model, smart but slow
 # chosen_llm = ChatAnthropic(model="claude-3-opus-20240307", max_tokens=4096)
 # cloud model, decent
