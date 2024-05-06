@@ -1,0 +1,32 @@
+{
+  "name": "llm-swarm",
+  "version": "1.0.0",
+  "description": "LLM-Swarm Project",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+        "eslint": "eslint --config eslint.config.js --no-ignore src/**/*.{js,jsx,ts,tsx}"
+    },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Vero-Ventures/llm-swarm.git"
+  },
+  "keywords": [
+    "AI",
+    "LLM"
+  ],
+  "author": "Vero Ventures",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Vero-Ventures/llm-swarm/issues"
+  },
+  "homepage": "https://github.com/Vero-Ventures/llm-swarm#readme",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.8.0",
+    "@typescript-eslint/parser": "^7.8.0",
+    "eslint": "^8.57.0",
+    "globals": "^15.1.0",
+    "prettier": "^3.2.5",
+    "typescript": "^5.4.5"
+  }
+}
