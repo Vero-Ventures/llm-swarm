@@ -2,11 +2,11 @@
   "name": "llm-swarm",
   "version": "1.0.0",
   "description": "LLM-Swarm Project",
-  "main": "index.js",
+  "main": "eslint.config.js",
   "type": "module",
   "scripts": {
-        "eslint": "eslint --config eslint.config.js --no-ignore src/**/*.{js,jsx,ts,tsx}"
-    },
+    "eslint": "eslint --config eslint.config.js --no-ignore src/**/*.{js,jsx,ts,tsx}"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Vero-Ventures/llm-swarm.git"
