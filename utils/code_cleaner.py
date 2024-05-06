@@ -15,8 +15,13 @@ def clean_python_code(result: str) -> str:
         # Adjust start index to skip the marker
         start_idx += len('```python')
     else:
-        # If no start marker, start from the beginning of the string
-        start_idx = 0
+        start_idx = result.find('```')
+        if start_idx != -1:
+            # Adjust start index to skip the marker
+            start_idx += len('```')
+            # If no start marker, start from the beginning of the string
+        else:
+            start_idx = 0
 
     # Find the end of the Python code block
     end_idx = result.find('```', start_idx)
