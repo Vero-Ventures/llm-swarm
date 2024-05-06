@@ -1,0 +1,10 @@
+pip install pre-commit
+pre-commit install
+
+
+npm install eslint@8.57.0 --save-dev
+npm install globals --save-dev
+npm install --save-dev prettier
+npm install @typescript-eslint/parser @typescript-eslint/eslint-plugin typescript --save-dev
+
+pip install guardrails-ai
