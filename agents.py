@@ -1,31 +1,33 @@
-import os
 from textwrap import dedent
 
 from crewai import Agent
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
-from langchain_community.llms import Ollama, OpenAI
+from langchain_community.llms import Ollama
 from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
 
 load_dotenv()
 
-# Initialize chosen LLM:
-
-# local model, not smart but fast
-# chosen_llm = Ollama(model="phi3")
-# local model, decent
-# chosen_llm = Ollama(model="llama3")
-# cloud model, decent
-chosen_llm = ChatAnthropic(model="claude-3-haiku-20240307", max_tokens=4096)
-# cloud model, smart but slow
-# chosen_llm = ChatAnthropic(model="claude-3-opus-20240307", max_tokens=4096)
-# cloud model, decent
-# chosen_llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7, max_tokens=4096)
-# cloud model, best
-# chosen_llm = ChatOpenAI(model_name="gpt-4-turbo-2024-04-09", temperature=0.5, max_tokens=4096)
-# cloud mode, fastest
-# chosen_llm = ChatGroq(model="llama3-8b-8192", temperature=0.5, max_tokens=4096)
+models = {
+    # local model, not smart but fast
+    "phi3": Ollama(model="phi3"),
+    # local model, decent
+    "llama3": Ollama(model="llama3"),
+    # cloud model, decent
+    "haiku": ChatAnthropic(model="claude-3-haiku-20240307", max_tokens=4096),
+    # cloud model, smart but slow
+    "opus": ChatAnthropic(model="claude-3-opus-20240307", max_tokens=4096),
+    # cloud model, decent
+    "gpt3.5-turbo": ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7, max_tokens=4096),
+    # cloud model, best
+    "gpt4-turbo": ChatOpenAI(
+        model="gpt-4-turbo-2024-04-09", temperature=0.5, max_tokens=4096
+    ),
+    # cloud mode, fastest
+    "groq": ChatGroq(model="llama3-8b-8192", temperature=0.5, max_tokens=4096),
+}
+chosen_llm = models["haiku"]
 
 
 class RefactoringAgents:
