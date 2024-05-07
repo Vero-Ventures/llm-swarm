@@ -6,20 +6,53 @@ This project proposes an ambitious framework, powered by AI, to revolutionize so
 
 - The LLM swarm will initially focus on building software using Python and TypeScript.
 
+## Setting up the Project
+
+### Python package management with `poetry`
+
+1. Install poetry package manager - find instructions [here](https://python-poetry.org/docs/#installing-with-the-official-installer).
+2. In the project directory, install the required dependencies by running:
+
+```shell
+poetry install --no-root
+```
+
+> This also creates a virtual environment for the project which can be actived by running `poetry shell`
+
+3. Install the `pre-commit` hooks by running:
+
+```shell
+poetry run pre-commit install
+```
+
+### Node.js package management with `npm`
+
+Install the required npm packages by running:
+
+```shell
+npm install --save-dev eslint@8.57.0 globals prettier @typescript-eslint/parser @typescript-eslint/eslint-plugin typescript
+```
+
+### Environment Variables
+
+Make a copy of `.env.example`, rename it to `.env`, and add the appropriate values for the environment variables.
+
 ## Running the Script
 
-You can use any LLM you wish, but GPT4 is recommended. To run the script, follow these steps:
+Run the main script with:
 
-- **Configure Environment**: Copy `.env.example`, rename to `.env`, and add the appropriate values to the environment variables
-- **Install Dependencies**: Run `poetry install --no-root`
-- **Execute the Script**: Run `poetry run python main.py` _OR_ enter the virtual environment with `poetry shell` and then run `python main.py`
+```shell
+poetry run python main.py
+```
+
+_OR_ enter the virtual environment with `poetry shell` and then run `python main.py`.
 
 ## Details & Explanation
 
 **Key Components**:
 
 - `./main.py` - Main script that gets input code, sets up AI crew, passed code to crew, and produces output code.
-- `./agents.py` - Defines the SWE agents in the crew.
+- `./agents.py` - Defines the SWE AI agents in the crew.
 - `./tasks.py` - Defines the tasks (i.e. prompts) carried out by the agents.
 
 **Framework Capabilities:**
