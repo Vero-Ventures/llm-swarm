@@ -1,7 +1,7 @@
 import os
 from textwrap import dedent
 
-from crewai import Agent
+from crewai_agents import Agent
 from dotenv import load_dotenv
 from langchain_anthropic import ChatAnthropic
 from langchain_community.llms import Ollama, OpenAI

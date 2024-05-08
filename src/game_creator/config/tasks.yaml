@@ -1,0 +1,39 @@
+
+# Project Manager Tasks
+understand_project_requirements:
+  description: >
+    Receive the project requirements, review then step-by-step, and create a development
+    plan consisting of clearly defined, actionable tasks.
+  expected_output: >
+    A list of tasks that are easy to read, understand, and execute. Each task should
+    have all the information required so that a developer can start working on it immediately.
+
+sign_off_on_project:
+  description: >
+    Review the project, ensure all the tasks have been completed, and sign off on the project.
+  expected_output: >
+    A signed-off project that meets all the requirements and is ready to be run immediately.
+
+# Senior Developer Tasks
+write_code:
+  description: >
+    Receive a series of tasks and, using leading practices, write clean, efficient code that
+    fulfill the requirements of each task.
+  expected_output: >
+    A script consisting of a complete program; it consists of all the tasks, writtin in clean,
+    effective code.
+
+# Senior Tester Tasks
+test_code:
+  description: >
+    Receive a script, review the code to ensure it looks correct, and write tests to ensure
+    the code does what it should.
+  expected_output: >
+    A series of tests that cover all the code in the script. Each test should be written in a way
+    that it's easy to understand and should cover all the code in the script.
+
+sign_off_on_project:
+  description: >
+    Review the project, ensure all the tasks have been completed, and sign off on the project.
+  expected_output: >
+    A signed-off project that meets all the requirements and is ready to be run immediately.

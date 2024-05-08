@@ -1,6 +1,6 @@
 from textwrap import dedent
 
-from crewai import Task
+from crewai_agents import Task
 
 
 class RefactoringTasks:
