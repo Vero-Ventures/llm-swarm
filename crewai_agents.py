@@ -1,4 +1,4 @@
-import os
+# import os
 # os.environ["SERPER_API_KEY"] = "Your Key"  # serper.dev API key
 # os.environ["OPENAI_API_KEY"] = "Your Key"
 
@@ -7,14 +7,16 @@ import os
 #################
 from langchain_community.llms import Ollama
 
-from crewai_agents import Agent
+from dotenv import load_dotenv
+from crewai import Agent
 from crewai import Task
 from crewai import Crew, Process
-from crewai_tools import SerperDevTool
+# from crewai_tools import SerperDevTool
 
 from textwrap import dedent
+load_dotenv()
 
-search_tool = SerperDevTool()
+# search_tool = SerperDevTool()
 
 # Initialize models
 llama = Ollama(model="llama3")
