@@ -1,19 +1,24 @@
 import os
-os.environ["SERPER_API_KEY"] = "Your Key"  # serper.dev API key
-os.environ["OPENAI_API_KEY"] = "Your Key"
+# os.environ["SERPER_API_KEY"] = "Your Key"  # serper.dev API key
+# os.environ["OPENAI_API_KEY"] = "Your Key"
 
 #################
 # DEFINE AGENTS #
 #################
+from langchain_community.llms import Ollama
+
 from crewai_agents import Agent
 from crewai import Task
 from crewai import Crew, Process
-from crewai.
 from crewai_tools import SerperDevTool
 
 from textwrap import dedent
 
 search_tool = SerperDevTool()
+
+# Initialize models
+llama = Ollama(model="llama3")
+deepseek = Ollama(model="deepseek-coder:6.7b")
 
 # PROJECT MANAGER AGENT
 project_manager = Agent(
@@ -22,12 +27,12 @@ project_manager = Agent(
                 them down in clear, logical, actionable tasks that
                 are easy to understand.'''),
     verbose=True,
-    memory=True,
     backstory=dedent('''
                      An expert project manager who's been managing projects for years. They know how
                      to break down a project into clear, actionable tasks that are easy to understand.
                      They think through the project, step-by-step, and ensure everything makes sense.'''),
-    allow_delegation=True
+    allow_delegation=True,
+    llm=llama
 )
 
 # SENIOR DEVELOPER AGENT
@@ -39,7 +44,8 @@ senior_developer = Agent(
     backstory=dedent('''
                      An expert developer who's been writing code for years.
                      They know leading practices and does their best to write high-quality code.'''),
-    allow_delegation=True
+    allow_delegation=True,
+    llm=deepseek
 )
 
 # SENIOR TESTER AGENT
@@ -51,7 +57,8 @@ senior_tester = Agent(
     backstory=dedent('''
                      An expert tester who's been testing code for years. They're great at
                      writing tests, reviewing code, and finding errors that others might miss.'''),
-    allow_delegation=True
+    allow_delegation=True,
+    llm=deepseek
 )
 
 #################
