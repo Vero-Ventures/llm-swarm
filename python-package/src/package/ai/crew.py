@@ -2,6 +2,7 @@ from crewai import Crew
 
 from agents import RefactoringAgents
 from tasks import RefactoringTasks
+from utils import clean_python_code
 
 # Initialize agents and tasks
 agents = RefactoringAgents()
@@ -25,7 +26,6 @@ def create_crew(code: str) -> Crew:
         code,
     )
 
-    # Create Crew responsible for Refactoring
     return Crew(
         agents=[
             senior_refactoring_engineer,
@@ -39,3 +39,11 @@ def create_crew(code: str) -> Crew:
         ],
         verbose=True,
     )
+
+
+def improve_code(code: str) -> str:
+    crew = create_crew(code)
+    result = crew.kickoff(inputs={"code": code})
+    # TODO: generalize code extraction function
+    result = clean_python_code(result)
+    return result

@@ -1,52 +1,53 @@
 import os
 import time
 
-from ai.crew import create_crew
+from ai.crew import improve_code
 from utils.cli import parse_cli_args
-from utils.code_cleaner import clean_python_code
 
 # Directory setup
 input_dir = "../../tests/input"
 output_dir = "../../tests/output"
 
 
-def main(args) -> None:
+def process_file(file_path, filename="output.py"):
+    print(f"Processing file: {file_path}")
     start_time = time.perf_counter()
 
+    output_path = os.path.join(output_dir, filename)
+
+    with open(file_path, "r") as file:
+        code = file.read()
+
+    result = improve_code(code)
+
+    end_time = time.perf_counter()
+    print(f"## Time taken: {end_time - start_time:.2f} seconds")
+
+    # Save the refactored code to the output file
+    with open(output_path, "w") as output_file:
+        output_file.write(result)
+        print(f"\nRefactored code for {file_path} saved to {output_path}")
+
+
+def process_directory(directory_path):
+    print(f"Processing directory: {directory_path}")
+    for root, _, files in os.walk(directory_path):
+        for file in files:
+            file_path = os.path.join(root, file)
+            process_file(file_path, filename=file)
+
+
+def main(args) -> None:
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
-    # Process each file in the input directory
-    for filename in os.listdir(input_dir):
-        if filename.endswith(".py"):  # Process Python files only
-            file_path = os.path.join(input_dir, filename)
-
-            # Read the input file
-            with open(file_path, "r") as file:
-                code_content = file.read()
-
-            # Create Crew responsible for Refactoring
-            crew = create_crew(code_content)
-
-            # Kickoff the refactoring process
-            result = crew.kickoff(inputs={"code": code_content})
-
-            # Extract the code only
-            result = clean_python_code(result)
-
-            output_path = os.path.join(output_dir, filename)
-
-            # Save the refactored code to the output file
-            with open(output_path, "w") as output_file:
-                output_file.write(result)
-                print(f"\nRefactored code for {filename} saved to {output_path}")
-
-    end_time = time.perf_counter()
-
-    print("\n\n########################")
-    print("Refactoring Completed")
-    print(f"## Time taken: {end_time - start_time:.2f} seconds")
-    print("########################\n")
+    path = args.path
+    if os.path.isfile(path):
+        process_file(path)
+    elif os.path.isdir(path):
+        process_directory(path)
+    else:
+        print(f"Invalid path: {path}")
 
 
 if __name__ == "__main__":
