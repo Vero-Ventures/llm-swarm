@@ -21,6 +21,7 @@ repos:
           ]
         files: \.[jt]sx?$ # *.js, *.jsx, *.ts and *.tsx
         types: [file]
+        exclude: vscode-extension/.* # Exclude for now
 
   - repo: https://github.com/pre-commit/mirrors-prettier
     rev: "v4.0.0-alpha.8" # Update to the desired version or SHA
