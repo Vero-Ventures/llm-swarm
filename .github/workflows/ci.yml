@@ -24,3 +24,6 @@ jobs:
 
     - name: Run Ruff Linter
       run: ruff .
+
+    - name: Run pre-commit Hooks
+      run: pre-commit run --all-files
