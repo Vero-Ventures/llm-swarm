@@ -22,8 +22,8 @@ print("-----------------------------------")
 start_time = time.perf_counter()
 
 # Directory setup
-input_dir = "test_input"
-output_dir = "test_output"
+input_dir = "../../tests/input"
+output_dir = "../../tests/output"
 
 # Ensure output directory exists
 os.makedirs(output_dir, exist_ok=True)
