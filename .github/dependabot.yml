@@ -1,0 +1,16 @@
+version: 2
+updates:
+  # Monitor JavaScript dependencies via npm
+  - package-ecosystem: "npm"
+    directory: "/"  # Adjust this if `package.json` is not in the root
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "eslint"
+        versions: ["8.57.0"]
+            
+   # Monitor Python dependencies via Poetry (using the pip ecosystem)
+  - package-ecosystem: "pip"
+    directory: "/"  # Adjust this if `pyproject.toml` is not in the root
+    schedule:
+      interval: "weekly"
