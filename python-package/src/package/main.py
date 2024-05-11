@@ -1,8 +1,8 @@
 import os
 import time
 
-from ai.crew import improve_code
-from utils.cli import parse_cli_args
+from package.ai.crew import improve_code
+from package.utils.cli import parse_cli_args
 
 # Directory setup
 input_dir = "../../tests/input"
@@ -37,7 +37,8 @@ def process_directory(directory_path):
             process_file(file_path, filename=file)
 
 
-def main(args) -> None:
+def main() -> None:
+    args = parse_cli_args()
     # Ensure output directory exists
     os.makedirs(output_dir, exist_ok=True)
 
@@ -51,5 +52,4 @@ def main(args) -> None:
 
 
 if __name__ == "__main__":
-    args = parse_cli_args()
-    main(args)
+    main()

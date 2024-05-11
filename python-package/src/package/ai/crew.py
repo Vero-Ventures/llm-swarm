@@ -1,8 +1,8 @@
 from crewai import Crew
 
-from agents import RefactoringAgents
-from tasks import RefactoringTasks
-from utils import clean_python_code
+from package.ai.agents import RefactoringAgents
+from package.ai.tasks import RefactoringTasks
+from package.utils.code_cleaner import clean_python_code
 
 # Initialize agents and tasks
 agents = RefactoringAgents()
