@@ -36,6 +36,9 @@ jobs:
       
     - run: npm ci # This installs the dependencies using npm
 
+    - name: Install pre-commit
+      run: pip install pre-commit # This ensures pre-commit is installed
+
     - name: Install Ruff
       run: pip install ruff # This ensures Ruff is installed
 
