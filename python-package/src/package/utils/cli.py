@@ -26,16 +26,16 @@ def parse_cli_args():
     )
 
     group.add_argument(
-        "-f",
-        "--file",
+        "-i",
+        "--in",
         dest="in_path",
         type=Path,
-        help="File or directory path to files to be refactored",
+        help="Input file or directory path for files to be refactored",
     )
 
     parser.add_argument(
         "-o",
-        "--output",
+        "--out",
         dest="out_path",
         type=Path,
         help="Output directory for refactored files",
