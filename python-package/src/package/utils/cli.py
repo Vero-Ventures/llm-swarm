@@ -3,7 +3,6 @@ from pathlib import Path
 
 
 def get_output_dir(in_path, out_path):
-    print(in_path, out_path)
     if not in_path and not out_path:
         return None
     if not out_path:

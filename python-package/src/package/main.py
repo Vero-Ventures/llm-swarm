@@ -1,54 +1,61 @@
-import os
 import time
 
 from package.ai.crew import improve_code
 from package.utils.cli import parse_cli_args
 
-# Directory setup
-input_dir = "../../tests/input"
-output_dir = "../../tests/output"
+
+def output_result(result, out_path, verbose=0):
+    if not out_path:
+        print(result)
+        return
+    with open(out_path, "w") as output_file:
+        output_file.write(result)
+        if verbose:
+            print(f"\nRefactored code saved to {out_path}")
 
 
-def process_file(file_path, filename="output.py"):
-    print(f"Processing file: {file_path}")
+def process_code(code: str, verbose=0, **kwargs):
     start_time = time.perf_counter()
-
-    output_path = os.path.join(output_dir, filename)
-
-    with open(file_path, "r") as file:
-        code = file.read()
 
     result = improve_code(code)
 
-    end_time = time.perf_counter()
-    print(f"## Time taken: {end_time - start_time:.2f} seconds")
+    if verbose:
+        end_time = time.perf_counter()
+        print(f"Code processing time: {end_time - start_time:.2f} seconds")
 
-    # Save the refactored code to the output file
-    with open(output_path, "w") as output_file:
-        output_file.write(result)
-        print(f"\nRefactored code for {file_path} saved to {output_path}")
+    return result
 
 
-def process_directory(directory_path):
-    print(f"Processing directory: {directory_path}")
-    for root, _, files in os.walk(directory_path):
-        for file in files:
-            file_path = os.path.join(root, file)
-            process_file(file_path, filename=file)
+def process_file(in_path, out_path, verbose=0, **kwargs):
+    if verbose:
+        print(f"\nProcessing file: {in_path}")
+
+    with open(in_path, "r") as file:
+        code = file.read()
+
+    result = process_code(code, verbose=verbose)
+    output_result(result, out_path / in_path.name, verbose=verbose)
+
+
+def process_directory(in_path, out_path, verbose=0, **kwargs):
+    # process immediate children of the input directory (non-recursive)
+    for file_path in in_path.iterdir():
+        if file_path.is_file():
+            process_file(file_path, out_path, verbose=verbose)
 
 
 def main() -> None:
     args = parse_cli_args()
-    # Ensure output directory exists
-    os.makedirs(output_dir, exist_ok=True)
 
-    path = args.path
-    if os.path.isfile(path):
-        process_file(path)
-    elif os.path.isdir(path):
-        process_directory(path)
-    else:
-        print(f"Invalid path: {path}")
+    if args.code:
+        result = process_code(**vars(args))
+        output_result(result, args.out_path, verbose=args.verbose)
+
+    elif args.in_path.is_file():
+        process_file(**vars(args))
+
+    elif args.in_path.is_dir():
+        process_directory(**vars(args))
 
 
 if __name__ == "__main__":
