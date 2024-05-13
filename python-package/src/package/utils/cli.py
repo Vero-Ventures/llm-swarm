@@ -22,7 +22,7 @@ def parse_cli_args():
     group.add_argument(
         "code",
         nargs="?",
-        help="Code to be refactored",
+        help="code (text block) to be refactored",
     )
 
     group.add_argument(
@@ -30,7 +30,7 @@ def parse_cli_args():
         "--in",
         dest="in_path",
         type=Path,
-        help="Input file or directory path for files to be refactored",
+        help="input file or directory path for files to be refactored",
     )
 
     parser.add_argument(
@@ -38,7 +38,7 @@ def parse_cli_args():
         "--out",
         dest="out_path",
         type=Path,
-        help="Output directory for refactored files",
+        help="output directory for refactored files (if not provided, print to console)",
     )
 
     parser.add_argument(
@@ -46,7 +46,7 @@ def parse_cli_args():
         "--verbose",
         action="count",
         default=0,
-        help="Increase verbosity level",
+        help="increase verbosity level",
     )
 
     args = parser.parse_args()

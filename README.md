@@ -40,13 +40,19 @@ npm install --save-dev eslint@8.57.0 globals prettier @typescript-eslint/parser 
 
 ## Running the Script
 
-Execute the main script from within `/python-package` by running:
+The main script can be run as a CLI tool from within the `/python-package`:
 
 ```shell
-poetry run python main.py
+poetry run cli  # use -h for help
 ```
 
-Alternatively, enter the virtual environment with `poetry shell` and then run `python main.py`.
+Alternatively, enter the virtual environment with `poetry shell` and then run `python main.py`, or simply run `poetry run python main.py`.
+
+There is also a bash script in the root folder that may be freely altered for testing purposes. Run it with:
+
+```shell
+./test.sh
+```
 
 ## Details & Explanation
 
