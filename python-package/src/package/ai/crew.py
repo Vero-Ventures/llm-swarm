@@ -1,8 +1,8 @@
-from crewai import Crew
+import re
 
+from crewai import Crew
 from package.ai.agents import RefactoringAgents
 from package.ai.tasks import RefactoringTasks
-from package.utils.code_cleaner import clean_python_code
 
 # Initialize agents and tasks
 agents = RefactoringAgents()
@@ -14,8 +14,10 @@ qa_refactoring_engineer = agents.qa_refactoring_engineer_agent()
 chief_qa_refactoring_engineer = agents.chief_qa_refactoring_engineer_agent()
 
 
-def create_crew(code: str) -> Crew:
-    # Create Tasks with the read code content
+def create_crew(code: str, verbose=0) -> Crew:
+    """
+    Create a Crew instance with agents and tasks for refactoring code.
+    """
     refactor_task = tasks.refactoring_task(
         senior_refactoring_engineer,
         code,
@@ -37,13 +39,27 @@ def create_crew(code: str) -> Crew:
             qa_review_task,
             consistency_check_task,
         ],
-        verbose=True,
+        verbose=verbose,
     )
 
 
-def improve_code(code: str) -> str:
-    crew = create_crew(code)
+def extract_code_block(text):
+    """
+    Extract code block enclosed in triple backticks from text.
+    """
+    # Regular expression to match code block enclosed in triple backticks
+    code_block_pattern = re.compile(r"```(?:[\w+-]*)\n(.*?)```", re.DOTALL)
+    if match := code_block_pattern.search(text):
+        return match.group(1).strip()
+    else:
+        return ""
+
+
+def improve_code(code: str, verbose=0) -> str:
+    """
+    Improve code by refactoring it using a Crew instance.
+    """
+    crew = create_crew(code, verbose=verbose)
     result = crew.kickoff(inputs={"code": code})
-    # TODO: generalize code extraction function
-    result = clean_python_code(result)
+    result = extract_code_block(result)
     return result

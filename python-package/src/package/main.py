@@ -17,7 +17,7 @@ def output_result(result, out_path, verbose=0):
 def process_code(code: str, verbose=0, **kwargs):
     start_time = time.perf_counter()
 
-    result = improve_code(code)
+    result = improve_code(code, verbose=verbose)
 
     if verbose:
         end_time = time.perf_counter()
