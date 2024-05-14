@@ -43,7 +43,7 @@ jobs:
       run: pip install ruff # This ensures Ruff is installed
 
     - name: Run Ruff Linter
-      run: ruff . # This runs the Ruff linter on the entire project
+      run: ruff check . # This runs the Ruff linter on the entire project
 
     - name: Run pre-commit Hooks
       run: pre-commit run --all-files # Runs the precommit hooks on all files
