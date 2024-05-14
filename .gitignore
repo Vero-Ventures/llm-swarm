@@ -1,5 +1,30 @@
-__pycache__
-.env
-.DS_Store
-*/tests/output/*
-node_modules
+# Compiled source #
+**/__pycache__/
+
+# Environment files #
+**/.env
+**/.DS_Store
+
+# Packages #
+**/node_modules/
+**/.venv/
+**/.nox/
+**/venv/
+
+# Distribution / build #
+**/out/
+**/dist/
+
+# Development tools #
+**/.vscode-test/
+**/.vs/
+**/bundled/libs/
+
+# Caches and logs #
+**/.pytest_cache/
+
+# Test outputs #
+**/tests/output/
+
+# Misc #
+*.vsix
