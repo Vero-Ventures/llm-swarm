@@ -11,6 +11,6 @@ updates:
             
    # Monitor Python dependencies via Poetry (using the pip ecosystem)
   - package-ecosystem: "pip"
-    directory: "./python-package"  # Adjust this if `pyproject.toml` is not in the root
+    directory: "/"  # Adjust this if `pyproject.toml` is not in the root
     schedule:
       interval: "weekly"
