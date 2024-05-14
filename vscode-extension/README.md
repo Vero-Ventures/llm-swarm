@@ -1,6 +1,7 @@
 # Running the extension
 
 ### cd into the vscode-extension directory
+
 cd vscode-extension
 
 # Create a python virtual environment for this project in a terminal
@@ -30,8 +31,6 @@ npm install
 ### Start running
 
 Select 'Run' > 'Start Debugging' from the top menu. This should start both the extension and the language server.
-
-
 
 # Template for VS Code python tools extensions
 
