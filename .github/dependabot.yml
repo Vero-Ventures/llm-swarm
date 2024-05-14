@@ -2,7 +2,7 @@ version: 2
 updates:
   # Monitor JavaScript dependencies via npm
   - package-ecosystem: "npm"
-    directory: "/"  # Adjust this if `package.json` is not in the root
+    directory: "./vscode-extension"  # Adjust this if `package.json` is not in the root
     schedule:
       interval: "weekly"
     ignore:
@@ -11,6 +11,6 @@ updates:
             
    # Monitor Python dependencies via Poetry (using the pip ecosystem)
   - package-ecosystem: "pip"
-    directory: "/"  # Adjust this if `pyproject.toml` is not in the root
+    directory: "./python-package"  # Adjust this if `pyproject.toml` is not in the root
     schedule:
       interval: "weekly"
