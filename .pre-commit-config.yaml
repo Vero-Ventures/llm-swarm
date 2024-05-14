@@ -27,5 +27,9 @@ repos:
     rev: "v4.0.0-alpha.8" # Update to the desired version or SHA
     hooks:
       - id: prettier
-        args: ["--write"] # Use '--write' to auto-format the code
+        args:
+          - --write # Use '--write' to auto-format the code
+          - --cache # Use '--cache' to speed up the process
+          - --cache-location # Specify the cache location
+          - vscode-extension/node_modules/.cache/prettier/.prettier-cache
         files: '\.(js|jsx|ts|tsx|css|md)$' # Adjust this regex to include the file types to format
