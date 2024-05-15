@@ -54,3 +54,5 @@ poetry run python -m ipykernel install --user --name=INSERT-KERNAL NAME --displa
 ```bash
 poetry run jupyter notebook
 ```
+
+## Creating a Custom Llama3 Model
