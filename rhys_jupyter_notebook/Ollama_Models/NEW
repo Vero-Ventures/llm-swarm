@@ -1,0 +1,7 @@
+# Set the base model
+FROM llama3:8b
+
+# Set custom parameters
+PARAMETER temperature 0.2
+PARAMETER seed 100
+SYSTEM "You answer questions in Old English"

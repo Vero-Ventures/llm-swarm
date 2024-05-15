@@ -1,0 +1,6 @@
+# Set the base model
+FROM llama3:8b
+
+# Set custom parameters
+PARAMETER temperature 0.7
+PARAMETER seed 42

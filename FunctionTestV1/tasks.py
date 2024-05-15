@@ -1,6 +1,5 @@
 from crewai import Task
 from textwrap import dedent
-from llama_cpp import LlamaCpp
 
 class FunctionTestTasks:
 

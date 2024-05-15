@@ -1,11 +1,10 @@
 from textwrap import dedent
 from crewai import Agent
-
 from langchain_community.llms import Ollama
 
 # Initialize LLMs for agents
-ollama3 = Ollama(model="llama3")
-# deepseek = Ollama(model="deepseek-coder:6.7b")
+# ollama3 = Ollama(model="NEW_MODEL")
+ollama3 = Ollama(model="NEW_MODEL")
 
 class FunctionTestAgents:
 
