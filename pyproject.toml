@@ -4,6 +4,9 @@ version = "0.1.0"
 description = ""
 authors = ["Terence Grigoruk <terence.grigoruk@gmail.com>"]
 readme = "README.md"
+packages = [
+    { from = "python-package/src", include = "package" }
+]
 
 [tool.poetry.dependencies]
 python = ">=3.11,<=3.13"
@@ -15,6 +18,12 @@ pygame = "^2.5.2"
 llama-cpp-python = "^0.2.0"
 ollama = "^0.1.0"
 
+[tool.poetry.group.dev.dependencies]
+pre-commit = "^3.7.0"
+ruff = "^0.4.3"
+
+[tool.poetry.scripts]
+cli = "package.main:main"
 
 [build-system]
 requires = ["poetry-core"]
