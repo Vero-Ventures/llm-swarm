@@ -1,3 +1,11 @@
+## Run Jupyter Notebook
+1. Right-click `rhys_jupyter_notebook` folder and select `Open in Integrated Terminal`
+
+2. Run the following command
+
+```bash
+poetry run jupyter notebook
+```
 ## Installation
 
 1. Create a local directory. Clone the project repository into it.
