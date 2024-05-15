@@ -12,9 +12,9 @@ agents = RefactoringAgents()
 tasks = RefactoringTasks()
 
 # Create Agents
-senior_refactoring_engineer = agents.senior_refactoring_engineer_agent()
-qa_refactoring_engineer = agents.qa_refactoring_engineer_agent()
-chief_qa_refactoring_engineer = agents.chief_qa_refactoring_engineer_agent()
+req_determining_agent = agents.requirements_agent()
+coding_agent = agents.coding_agent()
+code_checking_agent = agents.code_checking_agent()
 
 # Welcome message
 print("## Welcome to the Refactoring Crew")
@@ -38,14 +38,14 @@ for filename in os.listdir(input_dir):
             code_content = file.read()
 
         # Create Tasks with the read code content
-        refactor_task = tasks.refactoring_task(
-            senior_refactoring_engineer,
+        refactor_task = tasks.determine_reqs_task(
+            req_determining_agent,
             code_content,
         )
-        qa_review_task = tasks.qa_review_task(qa_refactoring_engineer, code_content)
-        consistency_check_task = tasks.consistency_check_task(
-            chief_qa_refactoring_engineer,
-            code_content,
+        qa_review_task = tasks.write_code_task(coding_agent, code_content)
+        consistency_check_task = tasks.check_code_task(
+            coding_agent,
+            
         )
 
         output_path = os.path.join(output_dir, filename)
@@ -53,9 +53,9 @@ for filename in os.listdir(input_dir):
         # Create Crew responsible for Refactoring
         crew = Crew(
             agents=[
-                senior_refactoring_engineer,
-                qa_refactoring_engineer,
-                chief_qa_refactoring_engineer,
+                req_determining_agent,
+                coding_agent,
+                code_checking_agent,
             ],
             tasks=[
                 refactor_task,
@@ -69,7 +69,7 @@ for filename in os.listdir(input_dir):
         result = crew.kickoff(inputs={"code": code_content})
 
         # Extract the code only
-        result = clean_python_code(result)
+        #result = clean_python_code(result)
 
         # Save the refactored code to the output file
         with open(output_path, "w") as output_file:

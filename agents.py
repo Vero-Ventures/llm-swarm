@@ -1,78 +1,68 @@
-import os
 from textwrap import dedent
-
 from crewai import Agent
-from dotenv import load_dotenv
-from langchain_anthropic import ChatAnthropic
-from langchain_community.llms import Ollama, OpenAI
-from langchain_groq import ChatGroq
 from langchain_openai import ChatOpenAI
+from langchain_anthropic import ChatAnthropic
+from langchain_groq import ChatGroq
+import os
+from dotenv import load_dotenv
+from langchain_community.llms import Ollama, OpenAI
+
 
 load_dotenv()
 
 # Initialize chosen LLM:
 
-# local model, not smart but fast
-# chosen_llm = Ollama(model="phi3")
-# local model, decent
-# chosen_llm = Ollama(model="llama3")
-# cloud model, decent
-chosen_llm = ChatAnthropic(model="claude-3-haiku-20240307", max_tokens=4096)
-# cloud model, smart but slow
-# chosen_llm = ChatAnthropic(model="claude-3-opus-20240307", max_tokens=4096)
-# cloud model, decent
-# chosen_llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.7, max_tokens=4096)
-# cloud model, best
-# chosen_llm = ChatOpenAI(model_name="gpt-4-turbo-2024-04-09", temperature=0.5, max_tokens=4096)
-# cloud mode, fastest
-# chosen_llm = ChatGroq(model="llama3-8b-8192", temperature=0.5, max_tokens=4096)
+llama = Ollama(model="llama3")
+deepseek = Ollama(model="deepseek-coder:6.7b")
+codellama = Ollama(model="codellama")
 
 
 class RefactoringAgents:
-    def senior_refactoring_engineer_agent(self):
+    def requirements_agent(self):
         return Agent(
-            role="Senior Refactoring Engineer",
-            goal="Refactor software functions to improve efficiency and readability",
+            role="Requirements Engineer",
+            goal="determine the goal of the given function and what needs to be changed",
             backstory=dedent(
                 """\
                 You are a Senior Software Engineer with a deep understanding of
-                software design patterns and best practices in Python. Your task
-                is to refactor code and implement documentation, aiming to enhance performance and maintainability
-                without altering the core functionality."""
+                software design patterns and best practices in Python. You have a strong understanding of
+                the various tools in python that make code more efficient and effective. Your task
+                is to analyze the function given to you and determine it's goal, and 
+                what ways it needs to be fixed and refactored or entirely written"""
             ),
             allow_delegation=False,
             verbose=True,
-            llm=chosen_llm,
-        )
+            llm=llama,
+    )
 
-    def qa_refactoring_engineer_agent(self):
+    def coding_agent(self):
         return Agent(
-            role="Refactoring Quality Assurance Engineer",
-            goal="Review refactored code for syntactic and logical correctness",
+            role="Senior Software Engineer",
+            goal="observe the goal of the function as given by the requirements engineer, and execute the changes",
             backstory=dedent(
                 """\
-                You are a meticulous software quality engineer specialized in
-                the post-refactoring review. You scrutinize refactored code for
-                syntax errors, possible regressions, and maintainability, ensuring
-                the changes do not introduce new bugs."""
+                You are a software engineer who takes the required changes from the previous engineer
+                and rewrites the code. Ensure everything is functioning, following best practices, and has the desired
+                inputs and outputs. use proper coding style, focusing on readablility. You may not change the parameters
+                of the function"""
             ),
-            allow_delegation=False,
+            allow_delegation=False, 
             verbose=True,
-            llm=chosen_llm,
+            llm=codellama,
         )
 
-    def chief_qa_refactoring_engineer_agent(self):
+    def code_checking_agent(self):
         return Agent(
             role="Chief Refactoring Quality Assurance Engineer",
             goal="Oversee the entire refactoring process and confirm functionality",
             backstory=dedent(
                 """\
-                Leading the quality assurance for refactoring, you ensure that
-                every piece of refactored code fulfills its intended functionality.
+                Leading the quality assurance for refactoring.
                 You oversee the integration and testing phases, ensuring high-quality
-                standards and seamless functionality across all modules."""
+                standards and seamless functionality across all modules. All code must
+                have comments and docstrings where needed"""
             ),
-            allow_delegation=True,
+            allow_delegation=False,
             verbose=True,
-            llm=chosen_llm,
+            llm=llama,
         )
