@@ -27,7 +27,7 @@ def g(x, y):
         x, y = y, x % y
     return x
 
-# Find the  maximum subarray sum (Kadane's algorithm)
+# Find the maximum subarray sum (Kadane's Algorithm)
 def k(l):
     m, c = float('-inf'), 0
     for n in l:
