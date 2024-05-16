@@ -1,6 +1,5 @@
 # ruff: noqa: E402
 # Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License.
 """Implementation of tool support over LSP."""
 
 from __future__ import annotations
@@ -33,18 +32,25 @@ update_sys_path(
 )
 
 # **********************************************************
-# Imports needed for the language server goes below this.
+# Imports needed for the language server go below this.
 # **********************************************************
 # pylint: disable=wrong-import-position,import-error
 import lsp_jsonrpc as jsonrpc
 import lsp_utils as utils
 import lsprotocol.types as lsp
 from pygls import server, uris, workspace
-from openai import OpenAI
 
-ai_client = OpenAI(
-    api_key="API_KEY_HERE"  # This won't be needed in the final implementation
-)
+# Import orjson
+try:
+    import orjson
+
+    print("orjson imported successfully")
+except ImportError as e:
+    print("Failed to import orjson:", e)
+
+from llm_swarm.ai.crew import (
+    improve_code,
+)  # Adjust the import based on your package structure
 
 WORKSPACE_SETTINGS = {}
 GLOBAL_SETTINGS = {}
@@ -56,19 +62,9 @@ LSP_SERVER = server.LanguageServer(
     name="llm-swarm", version="<server version>", max_workers=MAX_WORKERS
 )
 
-
 # **********************************************************
-# Tool specific code goes below this.
+# Tool-specific code goes below this.
 # **********************************************************
-
-# Reference:
-#  LS Protocol:
-#  https://microsoft.github.io/language-server-protocol/specifications/specification-3-16/
-#
-#  Sample implementations:
-#  Pylint: https://github.com/microsoft/vscode-pylint/blob/main/bundled/tool
-#  Black: https://github.com/microsoft/vscode-black-formatter/blob/main/bundled/tool
-#  isort: https://github.com/microsoft/vscode-isort/blob/main/bundled/tool
 
 # TODO: Update TOOL_MODULE with the module name for your tool.
 # e.g, TOOL_MODULE = "pylint"
@@ -78,8 +74,7 @@ TOOL_MODULE = "llm-swarm"
 # e.g, TOOL_DISPLAY = "Pylint"
 TOOL_DISPLAY = "LLM Swarm"
 
-# TODO: Update TOOL_ARGS with default argument you have to pass to your tool in
-# all scenarios.
+# TODO: Update TOOL_ARGS with default arguments you have to pass to your tool in all scenarios.
 TOOL_ARGS = []  # default arguments always passed to your tool.
 
 
@@ -428,15 +423,16 @@ def log_always(message: str) -> None:
 
 
 # *****************************************************
-# OpenAI API request handler.
+# Command handler using llm_swarm improve_code function.
 # *****************************************************
 @LSP_SERVER.command("llm_swarm_ai_fix")
 def llm_swarm_ai_fix(ls: server.LanguageServer, arguments: Any):
+    log_always("Running 'llm_swarm_ai_fix' command.")
     if len(arguments) > 0 and "uri" in arguments[0]:
         uri = arguments[0]["uri"]
         document = ls.workspace.get_document(uri)
         if document:
-            edits = improve_code_with_openai(document)
+            edits = improve_code_with_llm_swarm(document)
             if edits:
                 apply_text_edits(
                     ls, uri, edits, document.version
@@ -447,28 +443,19 @@ def llm_swarm_ai_fix(ls: server.LanguageServer, arguments: Any):
         log_warning("Invalid arguments for 'llm_swarm_ai_fix' command.")
 
 
-def improve_code_with_openai(document: workspace.Document) -> list[lsp.TextEdit] | None:
+def improve_code_with_llm_swarm(
+    document: workspace.Document,
+) -> list[lsp.TextEdit] | None:
+    log_always("Improving code with llm_swarm.")
     try:
-        # Send a request to OpenAI to improve the code
-        response = ai_client.chat.completions.create(
-            model="gpt-3.5-turbo-0125",
-            max_tokens=4096,
-            temperature=0.5,
-            messages=[
-                {
-                    "role": "system",
-                    "content": f"Improve the following code:\n{document.source}",
-                }
-            ],
-        )
+        # Use the improve_code function from llm_swarm to improve the code
+        improved_code = improve_code(document.source, verbose=0)
 
-        # Get the improved code from the OpenAI response
-        improved_code = response.choices[0].message.content
-
-        log_always("Received improved code from OpenAI")
+        log_always("Received improved code from llm_swarm")
 
         # Check if changes were actually made
         if document.source != improved_code:
+            log_always("Changes were made after code improvement.")
             # Create a text edit to replace the entire document
             edit = lsp.TextEdit(
                 range=lsp.Range(

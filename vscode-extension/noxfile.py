@@ -1,13 +1,8 @@
-# Copyright (c) Microsoft Corporation. All rights reserved.
-# Licensed under the MIT License.
-"""All the action we need during build"""
-
 import json
 import os
 import pathlib
 import urllib.request as url_lib
 from typing import List
-
 import nox  # pylint: disable=import-error
 
 
@@ -88,7 +83,6 @@ def _update_npm_packages(session: nox.Session) -> None:
         )
 
     new_package_json = json.dumps(package_json, indent=4)
-    # JSON dumps uses \n for line ending on all platforms by default
     if not new_package_json.endswith("\n"):
         new_package_json += "\n"
     package_json_path.write_text(new_package_json, encoding="utf-8")
@@ -114,20 +108,36 @@ def _setup_template_environment(session: nox.Session) -> None:
     _install_bundle(session)
 
 
-@nox.session()
+@nox.session(python="3.12")
 def setup(session: nox.Session) -> None:
     """Sets up the template for development."""
+    # Ensure pip is installed and upgraded
+    session.run("python", "-m", "ensurepip", external=True)
+    session.run("pip", "install", "--upgrade", "pip", external=True)
+
     _setup_template_environment(session)
 
+    # Install our custom package in the bundled/libs directory
+    session.run(
+        "pip",
+        "install",
+        "--target=./bundled/libs",
+        "bundled/llm-swarm-build/llm_swarm-0.1.0.tar.gz",
+        external=True,
+    )
 
-@nox.session()
+    # Debug: Print the sys.path to verify installation paths
+    session.run("python", "-c", "import sys; print(sys.path)", external=True)
+
+
+@nox.session(python="3.12")
 def tests(session: nox.Session) -> None:
     """Runs all the tests for the extension."""
     session.install("-r", "src/test/python_tests/requirements.txt")
     session.run("pytest", "src/test/python_tests")
 
 
-@nox.session()
+@nox.session(python="3.12")
 def lint(session: nox.Session) -> None:
     """Runs linter and formatter checks on python files."""
     session.install("-r", "./requirements.txt")
@@ -160,7 +170,7 @@ def lint(session: nox.Session) -> None:
     session.run("npm", "run", "lint", external=True)
 
 
-@nox.session()
+@nox.session(python="3.12")
 def build_package(session: nox.Session) -> None:
     """Builds VSIX package for publishing."""
     _check_files(["README.md", "LICENSE", "SECURITY.md", "SUPPORT.md"])
@@ -169,7 +179,7 @@ def build_package(session: nox.Session) -> None:
     session.run("npm", "run", "vsce-package", external=True)
 
 
-@nox.session()
+@nox.session(python="3.12")
 def update_packages(session: nox.Session) -> None:
     """Update pip and npm packages."""
     session.install("wheel", "pip-tools")
