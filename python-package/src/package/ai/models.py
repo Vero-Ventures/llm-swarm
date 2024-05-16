@@ -11,9 +11,16 @@ def get_local_models():
     return [model["name"] for model in ollama.list().get("models")]
 
 
-def download_model(model_name: str):
+def download_model(model_name: str) -> bool:
     """
     Download the model to local machine (saves to `~/.ollama/models` by default).
+
+    Args:
+        model_name (str): The name of the model to download.
+
+    Returns:
+        bool: True if the model was downloaded successfully or already exists,
+              False otherwise.
     """
     try:
         # Start the ollama server (necessary for using the ollama package)
@@ -23,7 +30,6 @@ def download_model(model_name: str):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            # shell=True,
         )
         # give the server some time to start
         time.sleep(3)
@@ -31,7 +37,7 @@ def download_model(model_name: str):
         print("Ollama server started.")
     except (FileNotFoundError, subprocess.CalledProcessError):
         print("Ollama is not installed. Please visit https://ollama.com/.")
-        return
+        return False
 
     print("Checking if model exists locally...")
     if model_name not in get_local_models():
@@ -48,6 +54,9 @@ def download_model(model_name: str):
 
 
 def test_model(model_name: str):
+    """
+    Test the model by invoking it with a sample input.
+    """
     llm = Ollama(model=model_name)
     print(ollama.show(model_name))
     print(llm.invoke("The first man on the moon was ..."))
