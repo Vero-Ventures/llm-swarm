@@ -1,0 +1,58 @@
+def fibonacci(n):
+    """
+    Calculate the nth Fibonacci number.
+
+    Args:
+        n (int): The position of the Fibonacci number to calculate.
+
+    Returns:
+        int: The nth Fibonacci number.
+
+    Example:
+        >>> fibonacci(5)
+        3
+
+    Description:
+        This function calculates the nth Fibonacci number using an iterative approach.
+        It starts with the base cases of 0 and 1, then iteratively updates the current value
+        to be the sum of the previous two values. The function returns the calculated Fibonacci number.
+
+    :param n: The position of the Fibonacci number to calculate.
+    :type n: int
+    :return: The nth Fibonacci number.
+    :rtype: int
+    """
+    a, b = 0, 1
+    for _ in range(n):
+        a, b = b, a + b
+    return a
+
+def merge(merged_list_a, merged_list_b):
+    """Merge two sorted lists into one sorted list.
+
+    This function takes two sorted lists `a` and `b`, and returns a new sorted list that contains all elements from both input lists. The function uses a simple iterative approach to achieve this.
+
+    Args:
+        merged_list_a (list): The first sorted list.
+        merged_list_b (list): The second sorted list.
+
+    Returns:
+        list: A new sorted list containing all elements from both input lists.
+
+    Example:
+        >>> merge([1, 3, 5], [2, 4, 6])
+        [1, 2, 3, 4, 5, 6]
+    """
+    result = []
+    i, j = 0, 0
+    while i < len(merged_list_a) and j < len(merged_list_b):
+        if merged_list_a[i] < merged_list_b[j]:
+            result.append(merged_list_a[i])
+            i += 1
+        else:
+            result.append(merged_list_b[j])
+            j += 1
+    result.extend(merged_list_a[i:])
+    result.extend(merged_list_b[j:])
+    return result
+

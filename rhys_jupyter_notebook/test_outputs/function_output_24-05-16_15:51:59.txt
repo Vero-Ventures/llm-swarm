@@ -1,0 +1,444 @@
+def calculate_fibonacci_sequence(n):
+    """
+    Calculate the Fibonacci sequence up to the nth term.
+
+    Args:
+        n (int): The number of terms in the Fibonacci sequence.
+
+    Returns:
+        int: The nth term in the Fibonacci sequence.
+
+    Example:
+        >>> calculate_fibonacci_sequence(5)
+        3
+
+    Description:
+        This function calculates the Fibonacci sequence, a series of numbers where each subsequent term is the sum of the two preceding terms. It starts with 0 and 1, and returns the nth term in the sequence.
+    """
+    initial_value, next_value = 0, 1
+    for _ in range(n):
+        initial_value, next_value = next_value, initial_value + next_value
+    return initial_value
+
+def merge_sorted_lists(left_list: list, right_list: list) -> list:
+    """Merge two sorted lists into one sorted list.
+
+    This function takes two sorted lists as input and returns a new sorted list that contains all elements from both input lists. The function assumes that the input lists are already sorted in ascending order.
+
+    Args:
+        left_list (list): The first sorted list.
+        right_list (list): The second sorted list.
+
+    Returns:
+        list: A new sorted list containing all elements from both input lists.
+
+    Example:
+        >>> left_list = [1, 3, 5]
+        >>> right_list = [2, 4, 6]
+        >>> merged_list = merge_sorted_lists(left_list, right_list)
+        >>> print(merged_list)  # Output: [1, 2, 3, 4, 5, 6]
+
+    :param left_list: The first sorted list.
+    :type left_list: list
+    :param right_list: The second sorted list.
+    :type right_list: list
+    :return: A new sorted list containing all elements from both input lists.
+    :rtype: list
+    """
+    result = []
+    left_index, right_index = 0, 0
+    while left_index < len(left_list) and right_index < len(right_list):
+        if left_list[left_index] < right_list[right_index]:
+            result.append(left_list[left_index])
+            left_index += 1
+        else:
+            result.append(right_list[right_index])
+            right_index += 1
+    result.extend(left_list[left_index:])
+    result.extend(right_list[right_index:])
+    return result
+
+def greatest_common_divisor(input_value1: int, input_value2: int) -> int:
+    """Calculate the greatest common divisor (GCD) of two integers using Euclid's algorithm.
+
+    Args:
+        input_value1 (int): The first integer.
+        input_value2 (int): The second integer.
+
+    Returns:
+        int: The GCD of the input values.
+
+    Example:
+        >>> greatest_common_divisor(12, 15)
+        3
+
+    Notes:
+        This function uses a while loop to repeatedly apply the division algorithm until the remainder is zero.
+        The GCD is then returned as the result.
+    """
+    while input_value2 != 0:
+        temporary_value = input_value1
+        input_value1 = input_value2
+        input_value2 = temporary_value % input_value2
+    return input_value1
+
+def find_max_subarray_sum(input_list):
+    """Find the maximum subarray sum using Kadane's Algorithm.
+
+    Args:
+        input_list (list): A list of integers.
+
+    Returns:
+        int: The maximum subarray sum.
+
+    Example:
+        >>> find_max_subarray_sum([-2, 1, -3, 4, -1, 2, 1, -5, 4])
+         6
+
+    Description:
+        This function uses Kadane's Algorithm to find the maximum subarray sum.
+        It iterates through the input list, keeping track of the current and maximum sums.
+        The maximum sum is updated whenever a new maximum is found.
+
+    :param input_list: A list of integers.
+    :return: The maximum subarray sum.
+    """
+    max_sum, current_sum = float('-inf'), 0
+    for num in input_list:
+        current_sum = max(num, current_sum + num)
+        max_sum = max(max_sum, current_sum)
+    return max_sum
+```
+Please let me know if this meets the expected criteria.
+
+def calculate_factorial(n):
+    """Calculate the factorial of a given integer.
+
+    Args:
+        n (int): The input integer for which to calculate the factorial.
+
+    Returns:
+        int: The calculated factorial value.
+
+    Example:
+        >>> calculate_factorial(5)
+        120
+
+    Notes:
+        This function uses recursion to efficiently calculate the factorial.
+        For large values of `n`, this function may exceed Python's recursion limit."""
+    return _calculate_factorial(n)
+
+def _calculate_factorial(n):
+    """Recursive helper function to calculate the factorial."""
+    return 1 if n == 0 else n * _calculate_factorial(n - 1)
+
+python
+def process_csv_file() -> tuple:
+    """Reads and processes a CSV file.
+    
+    This function reads a CSV file, extracts the column headers,
+    processes each row, and returns the total number of records
+    and the processed rows as a tuple.
+    
+    Args:
+        None
+    
+    Returns:
+        A tuple containing the total number of records and the processed rows.
+    """
+    with open('data.csv', 'r') as file:
+        reader = csv.reader(file)
+        headers = next(reader)  # Extract the column headers
+        rows = [row for row in reader]  # Process each row
+
+        total_records = len(rows)  # Calculate the total number of records
+        processed_rows = []  # Initialize an empty list to store processed rows
+
+        for row in rows:
+            processed_row = {}  # Create a dictionary to hold the processed row data
+            for i, cell in enumerate(row):
+                if headers[i].startswith('date_'):
+                    processed_row['date'] = cell  # Extract date values
+                elif headers[i].startswith('amount_'):
+                    processed_row['amount'] = float(cell)  # Convert amount values to floats
+                else:
+                    processed_row[headers[i]] = cell  # Store other column data
+
+            processed_rows.append(processed_row)  # Add the processed row to the list
+
+        return total_records, processed_rows
+
+def read_csv_file(file_path):
+    """
+    Reads a CSV file and returns its contents as a list of dictionaries.
+
+    Args:
+        file_path (str): The path to the CSV file.
+
+    Returns:
+        list[dict]: A list of dictionaries, where each dictionary represents
+            a row in the CSV file. Each key in the dictionary corresponds to
+            a column header, and the value is the corresponding value from the
+            row.
+
+    Example:
+        >>> data = read_csv_file('example.csv')
+        >>> print(data)
+        [{'column1': 'value1', 'column2': 'value2'}, {'column1': 'value3', 'column2': 'value4'}]
+
+    Notes:
+        This function assumes that the CSV file has a header row.
+    """
+    with open(file_path, mode='r') as csv_file:
+        reader = csv.reader(csv_file)
+        header = next(reader)
+        data = [dict(zip(header, row)) for row in reader]
+    return data
+
+def connect_and_execute_query() -> list:
+    """Connects to a database and executes a query.
+
+    This function creates a connection to the specified database, executes a SELECT query,
+    and returns the query results. The query results are returned as a list of tuples.
+
+    :return: A list of tuples containing the query results.
+    """
+
+    db_connection = create_database_connection()
+    cursor = execute_query(db_connection)
+    query_results = fetch_query_results(cursor)
+    return query_results
+
+def create_database_connection() -> sqlite3.connect:
+    """Creates a connection to the specified database.
+
+    This function connects to the specified SQLite database using the provided path.
+    The connection is then returned for further use.
+
+    :return: A SQLite connection object.
+    """
+
+    database_path = "path_to_your_database.db"
+    connection = sqlite3.connect(database_path)
+    return connection
+
+def execute_query(connection) -> sqlite3.Cursor:
+    """Executes a SELECT query on the specified database.
+
+    This function creates a cursor from the provided connection, executes the specified
+    SELECT query, and returns the cursor for further use.
+
+    :param connection: A SQLite connection object.
+    :return: A SQLite cursor object.
+    """
+
+    query = "SELECT * FROM your_table_name"
+    cursor = connection.cursor()
+    cursor.execute(query)
+    return cursor
+
+def fetch_query_results(cursor) -> list:
+    """Fetches the results of a SELECT query.
+
+    This function uses the provided cursor to fetch all the query results and
+    returns them as a list of tuples.
+
+    :param cursor: A SQLite cursor object.
+    :return: A list of tuples containing the query results.
+    """
+
+    results = cursor.fetchall()
+    return results
+
+python
+def query_database(database_path: str, sql_query: str) -> list:
+    """
+    Queries a SQLite database using a provided SQL query.
+
+    Args:
+        - database_path (str): The path to the SQLite database file.
+        - sql_query (str): The SQL query to execute on the database.
+
+    Returns:
+        A list of results from the executed SQL query. Each result is
+        represented as a tuple, where each element in the tuple corresponds
+        to a column in the query's result set.
+
+    Example usage:
+
+    >>> results = query_database('path/to/database.db', 'SELECT * FROM table_name')
+    >>> print(results)  # prints the query results
+
+    This function is designed to be used as a standalone utility for querying
+    SQLite databases. It provides a simple and easy-to-use interface for
+    executing SQL queries against a database, making it suitable for use in
+    a variety of applications.
+    """
+
+    with sqlite3.connect(database_path) as connection:
+        cursor = connection.cursor()
+        cursor.execute(sql_query)
+        results = cursor.fetchall()
+    return results
+
+def send_email(server: smtplib.SMTP, from_addr: str, to_addr: str, subject: str, body: str) -> None:
+    """Sends an email using SMTP.
+
+    Args:
+        server (smtplib.SMTP): The SMTP server to use for sending the email.
+        from_addr (str): The address of the sender.
+        to_addr (str): The address of the recipient.
+        subject (str): The subject line of the email.
+        body (str): The content of the email.
+
+    Returns:
+        None
+
+    Raises:
+        Exception: If an error occurs while sending the email, a descriptive error message is printed to the console.
+    """
+    try:
+        server.sendmail(from_addr, to_addr, subject, body)
+    except Exception as e:
+        print(f"Error sending email: {str(e)}")
+
+def send_email(username: str, password: str, to_address: str, message: str) -> None:
+    """Send an email using the provided username, password, recipient address, and message.
+
+    Args:
+        username (str): The username used for authentication.
+        password (str): The password used for authentication.
+        to_address (str): The recipient's email address.
+        message (str): The content of the email.
+
+    Returns:
+        None
+    """
+
+def e(u: str, p: str, t: str, m: str) -> None:
+    s = smtplib.SMTP('smtp.example.com', 587)
+    s.starttls()
+    s.login(u, p)
+    s.sendmail(u, t, m)
+    s.quit()
+```
+
+This is the actual complete content of the code, stripped out of all unnecessary information.
+
+def fetch_json_data() -> dict:
+    """Fetch JSON data from a web API.
+
+    This function sends a GET request to the specified API URL,
+    parses the response, and returns the processed data.
+
+    Args:
+        None
+
+    Returns:
+        A dictionary containing the parsed JSON data.
+    """
+    api_url = "https://api.example.com/data"
+    response = requests.get(api_url)
+    data = response.json()
+    parsed_data = parse_json_response(data)
+    return parsed_data
+
+def parse_json_response(json_data: dict) -> dict:
+    """Parse the JSON response from the API.
+
+    This function extracts relevant information from the JSON data,
+    processes it for analysis, and returns the result.
+
+    Args:
+        json_data (dict): The JSON data to be processed.
+
+    Returns:
+        A dictionary containing the processed data.
+    """
+
+def fetch_data(url):
+    """Fetch data from a given URL.
+
+    Args:
+        url (str): The URL to fetch data from.
+
+    Returns:
+        dict or None: If the request is successful, returns the JSON response.
+            Otherwise, returns an empty dictionary.
+
+    Raises:
+        Exception: If the request fails or returns a non-200 status code.
+
+    Notes:
+        This function uses the requests library to make a GET request
+        to the specified URL. It checks if the response status code is 200,
+        and if so, returns the JSON response. Otherwise, it returns an empty dictionary.
+    """
+    def j(u):
+        r = requests.get(u)
+        if r.status_code == 200:
+            return r.json()
+        else:
+            return {}
+
+    return j
+```
+
+This is the actual complete content of my Final Answer. I have stripped out everything except code and docstrings, as per your requirements.
+
+def search_files_with_regex(directory_path: str, pattern_to_match: str) -> list:
+    """Searches for files in a directory that match a given regular expression pattern.
+
+    Args:
+        - directory_path (str): The path to the directory to search.
+        - pattern_to_match (str): The regular expression pattern to match against file names.
+
+    Returns:
+        A list of file names found in the directory that match the given pattern.
+
+    Example:
+        >>> files_found = search_files_with_regex(directory_path="path/to/search", pattern_to_match=r"regex_pattern")
+        >>> print(files_found)
+        ['file1.txt', 'file2.py', ...]
+    """
+    import os
+    import re
+
+    files_found = []
+
+    for root, dirs, files in os.walk(directory_path):
+        for file_name in files:
+            if re.search(pattern_to_match, file_name):
+                files_found.append(file_name)
+
+    return files_found
+
+python
+def process_paths(directory_path: str, regex: str) -> list:
+    """Searches for files matching a given regular expression in a directory and its subdirectories.
+
+    Args:
+        directory_path (str): The path to the directory to search.
+        regex (str): The regular expression pattern to match.
+
+    Returns:
+        list: A list of file paths that match the given regular expression.
+
+    Example:
+        >>> process_paths('/path/to/directory', 'example.txt')
+        ['/path/to/directory/example.txt']
+
+    Notes:
+        This function uses the `os` and `re` modules to walk through the directory tree and search for files matching the given pattern.
+    """
+    matches = []
+    pattern = re.compile(regex)
+
+    for root, dirs, files in os.walk(directory_path):
+        for file in files:
+            if pattern.search(file):
+                matches.append(os.path.join(root, file))
+
+    return matches
+
