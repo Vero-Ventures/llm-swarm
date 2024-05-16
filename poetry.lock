@@ -575,13 +575,13 @@ cron = ["capturer (>=2.4)"]
 
 [[package]]
 name = "crewai"
-version = "0.28.8"
+version = "0.30.11"
 description = "Cutting-edge framework for orchestrating role-playing, autonomous AI agents. By fostering collaborative intelligence, CrewAI empowers agents to work together seamlessly, tackling complex tasks."
 optional = false
 python-versions = "<=3.13,>=3.10"
 files = [
-    {file = "crewai-0.28.8-py3-none-any.whl", hash = "sha256:ce8af4915ed0c43b9f593cd0aef17d9a85557a809d493fddca7609e5a6279c2e"},
-    {file = "crewai-0.28.8.tar.gz", hash = "sha256:02e95d5db7a614794b10527d12996cf211a691d18cb84deff29a43a877bfd405"},
+    {file = "crewai-0.30.11-py3-none-any.whl", hash = "sha256:127e223a7965a3ee1c61034531f5c543580c69641a4f738781fe67503f552a9c"},
+    {file = "crewai-0.30.11.tar.gz", hash = "sha256:71797c3a1da9a7d8fe6b308a260a9b27c1ce425b585a64bb1abc2b95df69d274"},
 ]
 
 [package.dependencies]
@@ -595,11 +595,11 @@ opentelemetry-api = ">=1.22.0,<2.0.0"
 opentelemetry-exporter-otlp-proto-http = ">=1.22.0,<2.0.0"
 opentelemetry-sdk = ">=1.22.0,<2.0.0"
 pydantic = ">=2.4.2,<3.0.0"
-python-dotenv = "1.0.0"
+python-dotenv = ">=1.0.0,<2.0.0"
 regex = ">=2023.12.25,<2024.0.0"
 
 [package.extras]
-tools = ["crewai-tools (>=0.1.7,<0.2.0)"]
+tools = ["crewai-tools (>=0.2.6,<0.3.0)"]
 
 [[package]]
 name = "dataclasses-json"
@@ -4186,4 +4186,4 @@ testing = ["big-O", "jaraco.functools", "jaraco.itertools", "more-itertools", "p
 [metadata]
 lock-version = "2.0"
 python-versions = ">=3.11,<=3.13"
-content-hash = "e244d99c35f54316373ea6dc6620653e522defa2858d8030e08f1f34410f8bce"
+content-hash = "7bfb544a9f34127444e885417402c7202a06301aba4820fb56af555892c12fe6"
