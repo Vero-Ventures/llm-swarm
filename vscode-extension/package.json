@@ -143,13 +143,13 @@
     "dependencies": {
         "@vscode/python-extension": "^1.0.5",
         "fs-extra": "^11.2.0",
-        "vscode-languageclient": "^8.1.0"
+        "vscode-languageclient": "^9.0.1"
     },
     "devDependencies": {
         "@types/fs-extra": "^11.0.4",
         "@types/glob": "^8.1.0",
-        "@types/node": "16.x",
-        "@types/vscode": "1.78.0",
+        "@types/node": "20.x",
+        "@types/vscode": "1.89.0",
         "@typescript-eslint/eslint-plugin": "^7.8.0",
         "@typescript-eslint/parser": "^7.8.0",
         "@vscode/test-electron": "^2.3.8",
