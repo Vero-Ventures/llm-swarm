@@ -11,6 +11,8 @@ on:
       - main
       - dev
       - "feature/**"
+  pull_request_review:
+    types: [submitted, edited]
 
 jobs:
   lint:
@@ -49,3 +51,32 @@ jobs:
 
       - name: Run pre-commit Hooks
         run: pre-commit run --all-files # Runs the precommit hooks on all files
+
+  auto-merge:
+    if: github.event.review.state == 'approved' && github.event.pull_request.user.login == 'dependabot[bot]'
+    needs: lint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.head_ref }}
+          token: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+          fetch-depth: 0  # Necessary to fetch all history for branch management
+
+      - name: Auto-merge pull request
+        run: gh pr merge ${{ github.event.pull_request.number }} --merge
+
+      - name: Delete branch after merge
+        run: |
+          branch=${{ github.event.pull_request.head.ref }}
+          repo=${{ github.repository }}
+          if [ "${{ github.event.pull_request.head.repo.fork }}" = "false" ]; then
+            gh api -X DELETE repos/$repo/git/refs/heads/$branch
+          fi
+
+    env:
+      GITHUB_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
