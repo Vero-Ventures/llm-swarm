@@ -71,7 +71,7 @@ jobs:
 
   auto-merge:
     if: github.event.review.state == 'approved' && github.event.pull_request.user.login == 'dependabot[bot]'
-    needs: lint
+    needs: [lint, dependency-review]
     runs-on: ubuntu-latest
     permissions:
       contents: write
