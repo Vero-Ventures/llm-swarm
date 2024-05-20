@@ -1,0 +1,22 @@
+version: '3.8'
+
+services:
+  python-cli:
+    build:
+      context: ./python-package
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./python-package:/app
+    command: ["poetry", "run", "cli"]
+
+  vscode-extension:
+    build:
+      context: ./vscode-extension
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./vscode-extension:/app
+    command: ["npm", "run", "start"]
