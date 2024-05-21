@@ -48,7 +48,7 @@ try:
 except ImportError as e:
     print("Failed to import orjson:", e)
 
-from llm_swarm.ai.crew import (
+from package.ai.crew import (
     improve_code,
 )  # Adjust the import based on your package structure
 
