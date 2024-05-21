@@ -8,6 +8,7 @@ def stop_ollama_server():
     """
     Stop the Ollama server.
     """
+    # TODO: End process gracefully (currently there's no command to stop the server).
     subprocess.run(["pkill", "ollama"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     print("Ollama server stopped.")
 
@@ -34,7 +35,6 @@ def start_ollama_server() -> bool:
         # give the server some time to start
         time.sleep(3)
 
-        # TODO: check if the server is actually running! (ollama serve spawns an additional process)
         print("Ollama server started.")
         return True
 
@@ -86,10 +86,8 @@ def test_model(model_name: str):
 
 
 if __name__ == "__main__":
-    if not start_ollama_server():
-        exit(1)
-    # model_name = "llama3"
-    model_name = "tinyllama"
-    download_model(model_name)
-    test_model(model_name)
-    stop_ollama_server()
+    if start_ollama_server():
+        model_name = "llama3"
+        download_model(model_name)
+        test_model(model_name)
+        stop_ollama_server()
