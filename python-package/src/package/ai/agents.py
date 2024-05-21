@@ -1,33 +1,9 @@
 from textwrap import dedent
 
 from crewai import Agent
-from dotenv import load_dotenv
-from langchain_anthropic import ChatAnthropic
 from langchain_community.llms import Ollama
-from langchain_groq import ChatGroq
-from langchain_openai import ChatOpenAI
 
-load_dotenv()
-
-models = {
-    # local model, not smart but fast
-    "phi3": Ollama(model="phi3"),
-    # local model, decent
-    "llama3": Ollama(model="llama3"),
-    # cloud model, decent
-    "haiku": ChatAnthropic(model="claude-3-haiku-20240307", max_tokens=4096),
-    # cloud model, smart but slow
-    "opus": ChatAnthropic(model="claude-3-opus-20240307", max_tokens=4096),
-    # cloud model, decent
-    "gpt3.5-turbo": ChatOpenAI(model="gpt-3.5-turbo", temperature=0.7, max_tokens=4096),
-    # cloud model, best
-    "gpt4-turbo": ChatOpenAI(
-        model="gpt-4-turbo-2024-04-09", temperature=0.5, max_tokens=4096
-    ),
-    # cloud mode, fastest
-    "groq": ChatGroq(model="llama3-8b-8192", temperature=0.5, max_tokens=4096),
-}
-chosen_llm = models["haiku"]
+llm = Ollama(model="llama3")
 
 
 class RefactoringAgents:
@@ -44,7 +20,7 @@ class RefactoringAgents:
             ),
             allow_delegation=False,
             verbose=True,
-            llm=chosen_llm,
+            llm=llm,
         )
 
     def qa_refactoring_engineer_agent(self):
@@ -60,7 +36,7 @@ class RefactoringAgents:
             ),
             allow_delegation=False,
             verbose=True,
-            llm=chosen_llm,
+            llm=llm,
         )
 
     def chief_qa_refactoring_engineer_agent(self):
@@ -76,5 +52,5 @@ class RefactoringAgents:
             ),
             allow_delegation=True,
             verbose=True,
-            llm=chosen_llm,
+            llm=llm,
         )
