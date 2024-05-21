@@ -4,6 +4,14 @@ import ollama
 from langchain_community.llms import Ollama
 
 
+def stop_ollama_server():
+    """
+    Stop the Ollama server.
+    """
+    subprocess.run(["pkill", "ollama"], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    print("Ollama server stopped.")
+
+
 def start_ollama_server() -> bool:
     """
     Start the Ollama server.
@@ -11,6 +19,9 @@ def start_ollama_server() -> bool:
     Returns:
         bool: True if the server was started successfully, False otherwise.
     """
+    # Stop the server if it is already running
+    stop_ollama_server()
+
     try:
         # Start the ollama server (necessary for using the ollama package)
         # and let continue running in the background
@@ -81,3 +92,4 @@ if __name__ == "__main__":
     model_name = "tinyllama"
     download_model(model_name)
     test_model(model_name)
+    stop_ollama_server()
