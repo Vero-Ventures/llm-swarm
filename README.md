@@ -1,25 +1,65 @@
+# AI Agent Swarm for Code Improvement
+
 ## **Project Description**
 
-This project proposes an ambitious framework, powered by AI, to revolutionize software development. The framework will utilize Large Language Model (LLM) driven multi-agent swarms to construct software applications.
+This project aims to build code improvement software that utlizes an AI agent swarm using remote OR locally hosted models. There are two main components to this project:
 
-**Initial Scope:**
+- A Python package that can be used as a CLI to perform AI tasks.
+- A VSCode extension that uses the package to perform tasks based on inputs derived from the IDE.
 
-- The LLM swarm will initially focus on building software using Python and TypeScript.
+## Setting up the Project
+
+### Python package management with `poetry`
+
+1. Install the `poetry` package manager - find instructions [here](https://python-poetry.org/docs/#installing-with-the-official-installer).
+2. In terminal navigate to `/python-package` and install the required dependencies by running:
+
+```shell
+poetry install --no-root
+```
+
+<!-- markdownlint-disable MD029 -->
+
+3. Install the `pre-commit` hooks by running:
+
+```shell
+poetry run pre-commit install
+```
+
+### Environment Variables
+
+Make a copy of `.env.example`, rename it to `.env`, and add the appropriate values for the environment variables.
+
+### Node.js package management with `npm`
+
+In terminal navigate to `/vscode-extension` and install the required npm packages by running:
+
+```shell
+npm install --save-dev eslint@8.57.0 globals prettier @typescript-eslint/parser @typescript-eslint/eslint-plugin typescript
+```
 
 ## Running the Script
 
-You can use any LLM you wish, but GPT4 is recommended. To run the script, follow these steps:
+The main script can be run as a CLI tool from within the `/python-package`:
 
-- **Configure Environment**: Copy `.env.example`, rename to `.env`, and add the appropriate values to the environment variables
-- **Install Dependencies**: Run `poetry install --no-root`
-- **Execute the Script**: Run `poetry run python main.py` _OR_ enter the virtual environment with `poetry shell` and then run `python main.py`
+```shell
+poetry run cli  # use -h for help
+```
+
+Alternatively, enter the virtual environment with `poetry shell` and then run `python main.py`, or simply run `poetry run python main.py`.
+
+There is also a bash script in the root folder that may be freely altered for testing purposes. Run it with:
+
+```shell
+./test.sh
+```
 
 ## Details & Explanation
 
 **Key Components**:
 
 - `./main.py` - Main script that gets input code, sets up AI crew, passed code to crew, and produces output code.
-- `./agents.py` - Defines the SWE agents in the crew.
+- `./agents.py` - Defines the SWE AI agents in the crew.
 - `./tasks.py` - Defines the tasks (i.e. prompts) carried out by the agents.
 
 **Framework Capabilities:**
@@ -38,11 +78,11 @@ You can use any LLM you wish, but GPT4 is recommended. To run the script, follow
 
 **Similar Projects:**
 
-- Devin: https://www.cognition-labs.com/introducing-devin
-- AutoGen: https://github.com/microsoft/autogen
-- CrewAI: https://github.com/joaomdmoura/crewai
-- ACE Framework: https://github.com/daveshap/ACE_Framework
-- Hierarchical Autonomous Agent Swarm (HAAS): https://github.com/daveshap/OpenAI_Agent_Swarm
+- Devin: <https://www.cognition-labs.com/introducing-devin>
+- AutoGen: <https://github.com/microsoft/autogen>
+- CrewAI: <https://github.com/joaomdmoura/crewai>
+- ACE Framework: <https://github.com/daveshap/ACE_Framework>
+- Hierarchical Autonomous Agent Swarm (HAAS): <https://github.com/daveshap/OpenAI_Agent_Swarm>
 
 ## **Programming Language(s)**
 

@@ -45,7 +45,7 @@ for filename in os.listdir(input_dir):
         qa_review_task = tasks.write_code_task(coding_agent, code_content)
         consistency_check_task = tasks.check_code_task(
             coding_agent,
-            
+
         )
 
         output_path = os.path.join(output_dir, filename)
