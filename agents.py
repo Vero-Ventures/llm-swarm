@@ -11,6 +11,8 @@ from langchain_community.llms import Ollama, OpenAI
 load_dotenv()
 
 # Initialize chosen LLM:
+import subprocess
+
 
 llama = Ollama(model="llama3")
 deepseek = Ollama(model="deepseek-coder:6.7b")

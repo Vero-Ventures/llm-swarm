@@ -66,7 +66,7 @@ for filename in os.listdir(input_dir):
         )
 
         # Kickoff the refactoring process
-        result = crew.kickoff(inputs={"code": code_content})
+        result = crew.kickoff()
 
         # Extract the code only
         #result = clean_python_code(result)
