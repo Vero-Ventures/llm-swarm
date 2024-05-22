@@ -26,8 +26,6 @@ Agent Swarms are groups of AI agents that work together to achieve a common goal
 
 
 
-
-
 We used a popular local LLM, **Llama3**, the eight-billion parameter version. We downloaded and managed these LLMs using [**Ollama**](https://ollama.com), an open-source platform for running LLMs locally.
 
 For our testing, we created a custom Llama3 model with a set seed. A seed means that the same input will produce the same output, allowing us to more accurately test a model.
@@ -80,3 +78,5 @@ ollama create [model_name] -f /path/to/my_custom_model
 ```
 
 6. To check if the model was successfully created, run `ollama list`; you should see `[model_name]` in the list
+
+
