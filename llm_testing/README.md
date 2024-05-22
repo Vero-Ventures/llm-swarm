@@ -23,6 +23,71 @@ Agent Swarms are groups of AI agents that work together to achieve a common goal
 
 ## Recommendations
 
+---
+
+# Installation
+
+1. **Clone the repository**: Clone the repository to your local machine using the following command:
+
+```bash
+git clone https://github.com/Vero-Ventures/llm-swarm.git
+cd llm-swarm
+```
+
+2. **Install Poetry**: Poetry is a package manager for Python that allows you to manage dependencies and run Python code in a virtual environment. To install Poetry, follow the instructions on the [Poetry website](https://python-poetry.org/docs/#installation).
+
+3. **Install Project Dependencies**: Open a terminal at the root of the repository and run the following command to install the project dependencies:
+
+```bash
+poetry install
+```
+
+4.
+
+
+
+1. Clone the repository to the directory of your choice
+
+2. Project dependencies are managed using the Poetry package manager. Install Poetry by following the instructions on the [website](https://python-poetry.org/).
+
+3. Navigate to the project directory, open a terminal, and run the following command to install the project dependencies:
+
+```bash
+poetry install
+```
+
+4. Next, add Jupyter Notebook to the project dependencies by running the following command:
+
+```bash
+poetry add jupyter
+```
+
+5. Open a Poetry shell, which allows you to run commands in the virtual environment and access the project's dependencies. To open a Poetry shell, run the following command:
+
+```bash
+poetry shell
+```
+
+6. You must install the kernel for the Jupyter Notebook. This kernel ties the notebook to the virtual environment and allows you to run Python code within the notebook.
+
+```bash
+python -m ipykernel install --user --name llm-swarm-kernel --display-name "LLM Swarm"
+```
+- The `--name` flag is a unique name for the kernel, which is used by Jupyter to identify the kernel.
+- The `--display-name` flag is a human-readable name for the kernel, which is displayed in the Jupyter interface.
+
+7. Start the Jupyter Notebook server by running the following command:
+
+```bash
+jupyter notebook
+```
+
+This should automatically open a new tab in your web browser, where you can access the Jupyter Notebook interface.
+
+
+
+
+
 
 
 
@@ -78,5 +143,3 @@ ollama create [model_name] -f /path/to/my_custom_model
 ```
 
 6. To check if the model was successfully created, run `ollama list`; you should see `[model_name]` in the list
-
-
