@@ -48,8 +48,6 @@ class RefactoringTasks:
             expected_output="Python function",
         )
 
-
-
     # higher level qa reviewing task
     def consistency_check_task(self, agent, function):
         return Task(
