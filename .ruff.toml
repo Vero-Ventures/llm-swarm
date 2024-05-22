@@ -27,7 +27,8 @@ exclude = [
     "site-packages",
     "venv",
     "*/tests/input",
-    "*/test/test_data/"
+    "*/test/test_data/",
+    "llm_testing/test_inputs/test_functions_raw.py"
 ]
 
 # Same as Black.

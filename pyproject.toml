@@ -21,9 +21,6 @@ jupyter = "^1.0.0"
 pre-commit = "^3.7.0"
 ruff = "^0.4.3"
 
-[tool.ruff]
-exclude = ["llm_testing/test_inputs/test_functions_raw.py"]
-
 [tool.poetry.scripts]
 cli = "package.main:main"
 
