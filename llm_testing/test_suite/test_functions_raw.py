@@ -1,8 +1,10 @@
-import sqlite3
-import smtplib
-import requests
-import os
-import re
+import csv  # For Function 6
+import sqlite3  # For Function 7
+import smtplib  # For Function 8
+import requests  # For Function 9
+import os  # For Function 10
+import re  # For Function 10
+
 
 # (1) Calculate Fibonacci sequence
 def f(n):
@@ -45,8 +47,6 @@ def f(n):
     return 1 if n == 0 else n * f(n - 1)
 
 # (6) Reading and processing a CSV file
-import csv
-
 def r(f):
     with open(f, mode='r') as c:
         r = csv.reader(c)
@@ -63,8 +63,6 @@ def q(d, s):
     return r
 
 # (8) Sending an email using SMTP
-
-
 def e(u, p, t, m):
     s = smtplib.SMTP('smtp.example.com', 587)
     s.starttls()
