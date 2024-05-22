@@ -1,5 +1,5 @@
 import unittest
-from test_functions_docstrings import fibonacci, merge, gcd, max_subarray_sum, factorial, read_csv, execute_query, send_email, fetch_json, search_files
+from test_functions_docstrings import fibonacci, merge, gcd, max_subarray_sum, factorial
 
 class TestFunctions(unittest.TestCase):
 
