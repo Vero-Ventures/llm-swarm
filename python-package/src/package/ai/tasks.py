@@ -10,7 +10,7 @@ class RefactoringTasks:
             description=dedent(
                 f"""\
                 You will read over the given code, identify the function that needs to be changed, determine it's goal, what needs to be changed in it's logic,
-                and find any style errors that should be refactored. determine if it needs to be split into 
+                and find any style errors that should be refactored. determine if it needs to be split into
                 multiple functions and if so, define them. Do not write any code, only pass along changes
                 that need to be made
 
@@ -47,7 +47,7 @@ class RefactoringTasks:
             agent=agent,
             expected_output="Python function",
         )
-    
+
 
 
     # higher level qa reviewing task
@@ -67,11 +67,11 @@ class RefactoringTasks:
             agent=agent,
             expected_output="Consistency-checked Python code",
         )
-    
+
     def check_code_task(self, agent):
         return Task(
             description=dedent(
-                f"""\
+                """
                 A list of all of the changes that needed to be made was previously created, then the agent
                 before you wrote some code. Take the new code and check that it meets all of the changes
                 requested by the list. If there are any that were not completed, then finish them. Otherwise,
