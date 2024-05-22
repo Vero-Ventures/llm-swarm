@@ -1,14 +1,17 @@
 # Research Project
 
 ## Description
+
 In this research document, we briefly explore the capabilities of AI agents, powered by a local large language model (LLM), to improve small snippets of code. Specifically, we explore AI agent swarms, which are groups of AI agents that work together to achieve a common goal.
 
 For our testing, we use a popular local LLM, [**Llama3**](https://github.com/meta-llama/llama3), the eight-billion parameter version, and the [**CrewAI**](https://www.crewai.com) framework, one of the most popular open-source frameworks for building AI agents.
 
 ### What is an AI Agent?
+
 Agents are entities, programmed by humans and powered by LLMs, that have a defined role and perform tasks related to that role. You may think of an agent as an employee who is responsible for a specific task or function within an organization.
 
 ### What are Agent Swarms?
+
 Agent Swarms are groups of AI agents that work together to achieve a common goal. They are composed of multiple agents, each with its own unique capabilities and strengths, and they work together to solve complex problems. You may think of an agent swarm similar to an organization, where each agent has different a different role and responsibility, and together they work to achieve a common goal.
 
 ## Objectives
@@ -22,9 +25,6 @@ Agent Swarms are groups of AI agents that work together to achieve a common goal
 ## Findings
 
 ## Recommendations
-
-
-
 
 # Installation
 
@@ -80,12 +80,6 @@ This should automatically open a new tab in your web browser, where you can acce
 
 ---
 
-
-
-
-
-
-
 We used a popular local LLM, **Llama3**, the eight-billion parameter version. We downloaded and managed these LLMs using [**Ollama**](https://ollama.com), an open-source platform for running LLMs locally.
 
 For our testing, we created a custom Llama3 model with a set seed. A seed means that the same input will produce the same output, allowing us to more accurately test a model.
@@ -113,7 +107,6 @@ llm = Ollama(model="[custom_model_name")
 ```
 
 This will automatically look in the same directory as the default model.
-
 
 ## Creating a Custom-Seeded Model
 
