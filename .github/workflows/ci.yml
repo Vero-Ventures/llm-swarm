@@ -67,7 +67,12 @@ jobs:
           comment-summary-in-pr: always
           #   fail-on-severity: moderate
           #   deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
-          #   retry-on-snapshot-warnings: true      
+          #   retry-on-snapshot-warnings: true
+          
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}        
 
   auto-merge:
     if: github.event.review.state == 'approved' && github.event.pull_request.user.login == 'dependabot[bot]'
