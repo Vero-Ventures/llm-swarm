@@ -1,12 +1,17 @@
+import sqlite3
+import smtplib
+import requests
+import os
+import re
 
-# Calculate Fibonacci sequence
+# (1) Calculate Fibonacci sequence
 def f(n):
     a, b = 0, 1
     for _ in range(n):
         a, b = b, a + b
     return a
 
-# Merge two sorted lists
+# (2) Merge two sorted lists
 def m(a, b):
     c = []
     i, j = 0, 0
@@ -21,13 +26,13 @@ def m(a, b):
     c.extend(b[j:])
     return c
 
-# Find the greatest common divisor using Euclid's algorithm
+# (3) Find the greatest common divisor using Euclid's algorithm
 def g(x, y):
     while y != 0:
         x, y = y, x % y
     return x
 
-# Find the maximum subarray sum (Kadane's Algorithm)
+# (4) Find the maximum subarray sum (Kadane's Algorithm)
 def k(l):
     m, c = float('-inf'), 0
     for n in l:
@@ -35,15 +40,11 @@ def k(l):
         m = max(m, c)
     return m
 
-# Calculate factorial recursively
+# (5) Calculate factorial recursively
 def f(n):
     return 1 if n == 0 else n * f(n - 1)
 
-
-
-
-
-# Reading and processing a CSV file
+# (6) Reading and processing a CSV file
 import csv
 
 def r(f):
@@ -53,9 +54,7 @@ def r(f):
         d = [dict(zip(h, l)) for l in r]
     return d
 
-# Connecting to a database and executing a query
-import sqlite3
-
+# (7) Connecting to a database and executing a query
 def q(d, s):
     with sqlite3.connect(d) as c:
         x = c.cursor()
@@ -63,8 +62,8 @@ def q(d, s):
         r = x.fetchall()
     return r
 
-# Sending an email using SMTP
-import smtplib
+# (8) Sending an email using SMTP
+
 
 def e(u, p, t, m):
     s = smtplib.SMTP('smtp.example.com', 587)
@@ -73,9 +72,7 @@ def e(u, p, t, m):
     s.sendmail(u, t, m)
     s.quit()
 
-# Fetching JSON data from a web API
-import requests
-
+# (9) Fetching JSON data from a web API
 def j(u):
     r = requests.get(u)
     if r.status_code == 200:
@@ -83,10 +80,7 @@ def j(u):
     else:
         return {}
 
-# Performing a file search with regex
-import os
-import re
-
+# (10) Performing a file search with regex
 def s(p, r):
     m = re.compile(r)
     l = []
