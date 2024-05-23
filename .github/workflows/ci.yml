@@ -51,8 +51,14 @@ jobs:
 
       - name: Run pre-commit Hooks
         run: pre-commit run --all-files # Runs the precommit hooks on all files
+      
+      - name: Run Snyk to check for vulnerabilities
+        uses: snyk/actions/python@master
+        env:
+          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}  
   
   dependency-review:
+    if: github.event_name == 'pull_request' || github.event_name == 'pull_request_review'
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -65,14 +71,6 @@ jobs:
         uses: actions/dependency-review-action@v4
         with:
           comment-summary-in-pr: always
-          #   fail-on-severity: moderate
-          #   deny-licenses: GPL-1.0-or-later, LGPL-2.0-or-later
-          #   retry-on-snapshot-warnings: true
-          
-      - name: Run Snyk to check for vulnerabilities
-        uses: snyk/actions/python@master
-        env:
-          SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}        
 
   auto-merge:
     if: github.event.review.state == 'approved' && github.event.pull_request.user.login == 'dependabot[bot]'
