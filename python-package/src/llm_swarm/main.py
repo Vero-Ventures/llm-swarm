@@ -1,7 +1,7 @@
 import time
 
-from package.ai.crew import improve_code
-from package.utils.cli import parse_cli_args
+from llm_swarm.ai.crew import improve_code
+from llm_swarm.utils.cli import parse_cli_args
 
 
 def output_result(result, out_path, verbose=0):

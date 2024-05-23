@@ -1,8 +1,8 @@
 import re
 
 from crewai import Crew
-from package.ai.agents import create_agent
-from package.ai.tasks import create_task
+from llm_swarm.ai.agents import create_agent
+from llm_swarm.ai.tasks import create_task
 
 
 def create_crew(code: str, verbose=0) -> Crew:

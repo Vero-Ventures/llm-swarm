@@ -1,11 +1,11 @@
 [tool.poetry]
 name = "llm-swarm"
-version = "0.1.0"
+version = "0.1.1"
 description = ""
 authors = ["Terence Grigoruk <terence.grigoruk@gmail.com>"]
 readme = "README.md"
 packages = [
-    { from = "python-package/src", include = "package" }
+    { from = "python-package/src", include = "llm_swarm" }
 ]
 
 [tool.poetry.dependencies]
@@ -15,14 +15,14 @@ crewai = ">=0.28.8,<0.31.0"
 langchain-anthropic = "^0.1.11"
 langchain-groq = "^0.1.3"
 ollama = "^0.2.0"
-jupyter = "^1.0.0"
 
 [tool.poetry.group.dev.dependencies]
+jupyter = "^1.0.0"
 pre-commit = "^3.7.0"
 ruff = "^0.4.3"
 
 [tool.poetry.scripts]
-cli = "package.main:main"
+cli = "llm_swarm.main:main"
 
 [build-system]
 requires = ["poetry-core"]
