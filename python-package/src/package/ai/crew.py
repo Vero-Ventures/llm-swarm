@@ -2,10 +2,7 @@ import re
 
 from crewai import Crew
 from package.ai.agents import create_agent
-from package.ai.tasks import RefactoringTasks
-
-# Initialize agents and tasks
-tasks = RefactoringTasks()
+from package.ai.tasks import create_task
 
 
 def create_crew(code: str, verbose=0) -> Crew:
@@ -14,28 +11,46 @@ def create_crew(code: str, verbose=0) -> Crew:
     """
 
     # Create Agents
-    senior_refactoring_engineer = create_agent("senior_refactoring_engineer")
-    qa_refactoring_engineer = create_agent("qa_refactoring_engineer")
-    chief_qa_refactoring_engineer = create_agent("chief_qa_refactoring_engineer")
+    variable_name_agent = create_agent("senior_python_developer")
+    docstring_agent = create_agent("senior_code_documentation_expert")
+    qa_agent = create_agent("senior_python_qa_tester")
+    code_writer_agent = create_agent("senior_code_writer")
 
     # Create Tasks
-    refactor_task = tasks.refactoring_task(
-        senior_refactoring_engineer,
-        code,
+    improve_variable_names_task = create_task(
+        "improve_variable_names",
+        agent=variable_name_agent,
+        code=code,
     )
-    qa_review_task = tasks.qa_review_task(qa_refactoring_engineer, code)
-    consistency_check_task = tasks.consistency_check_task(
-        chief_qa_refactoring_engineer,
-        code,
+    add_docstrings_task = create_task(
+        "add_docstrings",
+        agent=docstring_agent,
+        context=[improve_variable_names_task],
+    )
+    review_code_task = create_task(
+        "review_code",
+        agent=qa_agent,
+        context=[add_docstrings_task],
+    )
+    write_code_task = create_task(
+        "write_code",
+        agent=code_writer_agent,
+        context=[review_code_task],
     )
 
     return Crew(
         agents=[
-            senior_refactoring_engineer,
-            qa_refactoring_engineer,
-            chief_qa_refactoring_engineer,
+            variable_name_agent,
+            docstring_agent,
+            qa_agent,
+            code_writer_agent,
         ],
-        tasks=[refactor_task, qa_review_task, consistency_check_task],
+        tasks=[
+            improve_variable_names_task,
+            add_docstrings_task,
+            review_code_task,
+            write_code_task,
+        ],
         verbose=verbose,
     )
 
