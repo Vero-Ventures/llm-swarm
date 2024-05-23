@@ -4,8 +4,18 @@ FROM python:3.12-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the current directory contents into the container at /app
+# Copy the pyproject.toml file and poetry.lock file into the working directory
+COPY ../pyproject.toml ../poetry.lock /app/
+
+# Copy the rest of the application code into the container
 COPY . /app
+
+# Install build-essential for compiling packages
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    g++ \
+    && rm -rf /var/lib/apt/lists/*
 
 # Install Poetry
 RUN pip install poetry
