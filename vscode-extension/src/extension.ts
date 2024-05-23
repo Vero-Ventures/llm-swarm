@@ -73,6 +73,46 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
         );
     };
 
+    // Create the status bar item
+    const statusBarItem = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
+    statusBarItem.text = '$(zap) LLM Swarm AI';
+    statusBarItem.tooltip = 'Improve code with LLM Swarm';
+    statusBarItem.command = 'llm-swarm.showQuickPick';
+    statusBarItem.show();
+
+    context.subscriptions.push(statusBarItem);
+
+    interface CommandQuickPickItem extends vscode.QuickPickItem {
+        command: string;
+    }
+
+    // Register the quick pick command
+    context.subscriptions.push(
+        vscode.commands.registerCommand('llm-swarm.showQuickPick', async () => {
+            const quickPick = vscode.window.createQuickPick<CommandQuickPickItem>();
+            quickPick.items = [
+                {
+                    label: '$(zap)$(file-code) Improve File',
+                    description: 'Improve the entire file with LLM Swarm',
+                    command: 'llm-swarm.improveFile',
+                },
+                {
+                    label: '$(zap)$(edit) Improve Selection',
+                    description: 'Improve the selected code with LLM Swarm',
+                    command: 'llm-swarm.improveSelection',
+                },
+            ];
+            quickPick.onDidChangeSelection((selection) => {
+                if (selection[0]) {
+                    vscode.commands.executeCommand(selection[0].command);
+                    quickPick.hide();
+                }
+            });
+            quickPick.onDidHide(() => quickPick.dispose());
+            quickPick.show();
+        }),
+    );
+
     context.subscriptions.push(
         onDidChangePythonInterpreter(async () => {
             await runServer();

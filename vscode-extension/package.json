@@ -131,7 +131,7 @@
             {
                 "title": "Restart Server",
                 "category": "LLM Swarm",
-                "command": "llm-swarm.restart"
+                "command": "llm-swarm.restart"                
             },
             {
                 "title": "AI Improve File",
