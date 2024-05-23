@@ -131,7 +131,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                 const document = editor.document;
                 const uri = document.uri.toString();
 
-                const loadingMessage = vscode.window.setStatusBarMessage('$(sync~spin) Improving code...');
+                const loadingMessage = vscode.window.setStatusBarMessage('$(gear~spin) Improving code... $(gear~spin)');
 
                 try {
                     await lsClient?.sendRequest('workspace/executeCommand', {
@@ -155,7 +155,9 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                 const uri = document.uri.toString();
                 const selection = editor.selection;
 
-                const loadingMessage = vscode.window.setStatusBarMessage('$(sync~spin) Improving selected code...');
+                const loadingMessage = vscode.window.setStatusBarMessage(
+                    '$(gear~spin) Improving selected code... $(gear~spin)',
+                );
 
                 try {
                     await lsClient?.sendRequest('workspace/executeCommand', {
