@@ -40,13 +40,14 @@ import lsp_utils as utils
 import lsprotocol.types as lsp
 from pygls import server, uris, workspace
 
-# Import orjson
-try:
-    import orjson
+# version of python we are running
+# print("Python version: ", sys.version)
 
-    print("orjson imported successfully")
-except ImportError as e:
-    print("Failed to import orjson:", e)
+# Log the sys.path used to run the server.
+# print("sys.path used to run Server: ", sys.path)
+
+# log all available python packages
+# print("Available python packages: ", os.listdir(sys.path[0]))
 
 from package.ai.crew import (
     improve_code,
@@ -423,40 +424,122 @@ def log_always(message: str) -> None:
 
 
 # *****************************************************
-# Command handler using llm_swarm improve_code function.
+# Command handlers and utility functions.
 # *****************************************************
-@LSP_SERVER.command("llm_swarm_ai_fix")
-def llm_swarm_ai_fix(ls: server.LanguageServer, arguments: Any):
-    log_always("Running 'llm_swarm_ai_fix' command.")
-    if len(arguments) > 0 and "uri" in arguments[0]:
+
+
+# Command handler for 'llm_swarm_ai_improve_file'
+@LSP_SERVER.command("llm_swarm_ai_improve_file")
+def llm_swarm_ai_improve_file(ls: server.LanguageServer, arguments: Any):
+    log_to_output("Running 'llm_swarm_ai_improve_file' command.")
+    if arguments and "uri" in arguments[0]:
         uri = arguments[0]["uri"]
-        document = ls.workspace.get_document(uri)
+        document = ls.workspace.get_text_document(uri)
         if document:
             edits = improve_code_with_llm_swarm(document)
             if edits:
-                apply_text_edits(
-                    ls, uri, edits, document.version
-                )  # Pass ls as an argument to apply_text_edits
+                apply_text_edits(ls, uri, edits, document.version)
             else:
-                log_warning("No changes were made to the document.")
+                log_to_output("No changes were made to the document.")
+        else:
+            log_to_output(f"Document not found or already disposed. URI: {uri}")
     else:
-        log_warning("Invalid arguments for 'llm_swarm_ai_fix' command.")
+        log_to_output("Invalid arguments for 'llm_swarm_ai_improve_file' command.")
 
 
+# Command handler for 'llm_swarm_ai_improve_selection'
+@LSP_SERVER.command("llm_swarm_ai_improve_selection")
+def llm_swarm_ai_improve_selection(ls: server.LanguageServer, arguments: Any):
+    log_to_output("Running 'llm_swarm_ai_improve_selection' command.")
+    if arguments and "uri" in arguments[0] and "range" in arguments[0]:
+        uri = arguments[0]["uri"]
+        range = arguments[0]["range"]
+        document = ls.workspace.get_text_document(uri)
+        if document:
+            selected_text = document.source[
+                range["start"]["line"] : range["end"]["line"]
+            ]
+            edits = improve_selected_text_with_llm_swarm(document, selected_text, range)
+            if edits:
+                apply_text_edits(ls, uri, edits, document.version)
+            else:
+                log_to_output("No changes were made to the selection.")
+        else:
+            log_to_output(f"Document not found or already disposed. URI: {uri}")
+    else:
+        log_to_output("Invalid arguments for 'llm_swarm_ai_improve_selection' command.")
+
+
+# Function to apply text edits to a document
+def apply_text_edits(
+    ls: server.LanguageServer, uri: str, edits: list[lsp.TextEdit], version: int
+):
+    log_to_output("Applying text edits to document.")
+
+    # Verify and log edits (briefly)
+    for edit in edits:
+        log_to_output(
+            f"Edit Range: Start({edit.range.start.line},{edit.range.start.character}) "
+            f"End({edit.range.end.line},{edit.range.end.character}) "
+            f"New Text: {edit.new_text[:30]}..."
+        )
+
+    # Create VersionedTextDocumentIdentifier and TextDocumentEdit
+    versioned_text_document_identifier = lsp.VersionedTextDocumentIdentifier(
+        uri=uri, version=version
+    )
+    text_document_edit = lsp.TextDocumentEdit(
+        text_document=versioned_text_document_identifier, edits=edits
+    )
+
+    # Create WorkspaceEdit and apply the edit
+    workspace_edit = lsp.WorkspaceEdit(document_changes=[text_document_edit])
+    response = ls.apply_edit(workspace_edit)
+
+    # Define callback function for handling the result
+    def on_applied(future):
+        try:
+            result = future.result()
+            log_to_output(f"Edit applied result: {result}")
+            if not result.applied:
+                handle_edit_failure(result, edits)
+        except Exception as e:
+            log_to_output(f"Failed to apply edit: {e}", lsp.MessageType.Error)
+
+    response.add_done_callback(on_applied)
+
+    log_to_output(f"Response from apply_edit: {response}")
+
+
+def log_error_context(edits):
+    for edit in edits:
+        log_to_output(
+            f"Edit Range: {edit.range.start.line}:{edit.range.start.character} to {edit.range.end.line}:{edit.range.end.character}"
+        )
+        log_to_output(f"New Text: {edit.new_text}")
+
+
+# Function to handle edit failures
+def handle_edit_failure(result, edits):
+    log_error(f"Failed to apply edit: {result.failure_reason}")
+    if result.failed_change:
+        log_error(f"Failed change: {result.failed_change}")
+    for edit in edits:
+        log_error(
+            f"Edit Range: {edit.range.start.line}:{edit.range.start.character} to "
+            f"{edit.range.end.line}:{edit.range.end.character}"
+        )
+        log_error(f"New Text: {edit.new_text}")
+
+
+# Function to improve code with llm_swarm
 def improve_code_with_llm_swarm(
     document: workspace.Document,
 ) -> list[lsp.TextEdit] | None:
-    log_always("Improving code with llm_swarm.")
+    log_to_output("Improving code with llm_swarm.")
     try:
-        # Use the improve_code function from llm_swarm to improve the code
         improved_code = improve_code(document.source, verbose=0)
-
-        log_always("Received improved code from llm_swarm")
-
-        # Check if changes were actually made
         if document.source != improved_code:
-            log_always("Changes were made after code improvement.")
-            # Create a text edit to replace the entire document
             edit = lsp.TextEdit(
                 range=lsp.Range(
                     start=lsp.Position(line=0, character=0),
@@ -465,49 +548,46 @@ def improve_code_with_llm_swarm(
                 new_text=improved_code,
             )
             return [edit]
-        else:
-            log_always("No changes necessary after code improvement.")
-            return None
-
+        return None
     except Exception as e:
-        log_error(f"Error occurred while improving code: {str(e)}")
+        log_to_output(
+            f"Error occurred while improving code: {e}", lsp.MessageType.Error
+        )
         return None
 
 
-def apply_text_edits(
-    ls: server.LanguageServer, uri: str, edits: list[lsp.TextEdit], version: int
-):
-    # Check and manage the document version correctly
-    if version is None:
-        version = 0  # Default to 0 if no version is tracked
-    else:
-        version += 1  # Increment version to apply new edits
-
-    # Create the VersionedTextDocumentIdentifier with the current version
-    versioned_text_document_identifier = lsp.VersionedTextDocumentIdentifier(
-        uri=uri, version=version
-    )
-
-    # Create the TextDocumentEdit object using the document identifier and the list of edits
-    text_document_edit = lsp.TextDocumentEdit(
-        text_document=versioned_text_document_identifier, edits=edits
-    )
-
-    # Create the WorkspaceEdit object using document changes which should include our text_document_edit
-    workspace_edit = lsp.WorkspaceEdit(document_changes=[text_document_edit])
-
-    # Call the apply_edit function from the LSP server with the workspace_edit
-    response = ls.apply_edit(
-        workspace_edit
-    )  # Use ls.apply_edit instead of LSP_SERVER.apply_edit
-    if response:
-        log_always("Applied text edits to document. Response: " + str(response))
-    else:
-        log_error(f"Failed to apply edits: {response.failure_reason}")
+# Function to improve selected text with llm_swarm
+def improve_selected_text_with_llm_swarm(
+    document: workspace.Document, selected_text: str, range: dict
+) -> list[lsp.TextEdit] | None:
+    log_to_output("Improving selected text with llm_swarm.")
+    try:
+        improved_code = improve_code(selected_text, verbose=0)
+        if selected_text != improved_code:
+            edit = lsp.TextEdit(
+                range=lsp.Range(
+                    start=lsp.Position(
+                        line=range["start"]["line"],
+                        character=range["start"]["character"],
+                    ),
+                    end=lsp.Position(
+                        line=range["end"]["line"], character=range["end"]["character"]
+                    ),
+                ),
+                new_text=improved_code,
+            )
+            return [edit]
+        return None
+    except Exception as e:
+        log_to_output(
+            f"Error occurred while improving selected text: {e}", lsp.MessageType.Error
+        )
+        return None
 
 
 # *****************************************************
 # Start the server.
 # *****************************************************
 if __name__ == "__main__":
+    print("Starting LSP server.")
     LSP_SERVER.start_io()

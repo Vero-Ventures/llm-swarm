@@ -129,6 +129,9 @@ def setup(session: nox.Session) -> None:
     # Debug: Print the sys.path to verify installation paths
     session.run("python", "-c", "import sys; print(sys.path)", external=True)
 
+    # Debug: Print the installed packages to verify installation
+    session.run("pip", "list", external=True)
+
 
 @nox.session(python="3.12")
 def tests(session: nox.Session) -> None:

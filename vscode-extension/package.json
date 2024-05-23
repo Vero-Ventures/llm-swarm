@@ -134,9 +134,14 @@
                 "command": "llm-swarm.restart"
             },
             {
-                "title": "Improve Code",
+                "title": "AI Improve File",
                 "category": "LLM Swarm",
-                "command": "llm-swarm.improveCode"
+                "command": "llm-swarm.improveFile"
+            },
+            {
+                "title": "AI Improve Selection",
+                "category": "LLM Swarm",
+                "command": "llm-swarm.improveSelection"
             }
         ]
     },
