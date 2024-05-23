@@ -26,5 +26,8 @@
 # Test outputs #
 **/tests/output/
 
+# Jupyter Notebook #
+.ipynb_checkpoints
+
 # Misc #
 *.vsix

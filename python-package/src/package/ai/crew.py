@@ -18,15 +18,8 @@ def create_crew(code: str, verbose=0) -> Crew:
     """
     Create a Crew instance with agents and tasks for refactoring code.
     """
-    refactor_task = tasks.refactoring_task(
-        senior_refactoring_engineer,
-        code,
-    )
-    qa_review_task = tasks.qa_review_task(qa_refactoring_engineer, code)
-    consistency_check_task = tasks.consistency_check_task(
-        chief_qa_refactoring_engineer,
-        code,
-    )
+
+    # Tasks will be added later
 
     return Crew(
         agents=[
@@ -34,11 +27,7 @@ def create_crew(code: str, verbose=0) -> Crew:
             qa_refactoring_engineer,
             chief_qa_refactoring_engineer,
         ],
-        tasks=[
-            refactor_task,
-            qa_review_task,
-            consistency_check_task,
-        ],
+        tasks=[],
         verbose=verbose,
     )
 
