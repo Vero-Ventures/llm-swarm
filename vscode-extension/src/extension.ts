@@ -138,7 +138,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                         command: 'llm_swarm_ai_improve_file',
                         arguments: [{ uri }],
                     });
-                    vscode.window.showInformationMessage('Code improvement completed successfully.');
+                    vscode.window.showInformationMessage('Code improvement completed successfully. 🎉');
                 } catch (error) {
                     vscode.window.showErrorMessage('Error occurred while improving code: ' + (error as Error).message);
                 } finally {
@@ -170,7 +170,7 @@ export async function activate(context: vscode.ExtensionContext): Promise<void> 
                             },
                         ],
                     });
-                    vscode.window.showInformationMessage('Code improvement completed successfully.');
+                    vscode.window.showInformationMessage('Code improvement completed successfully. 🎉');
                 } catch (error) {
                     vscode.window.showErrorMessage('Error occurred while improving code: ' + (error as Error).message);
                 } finally {
