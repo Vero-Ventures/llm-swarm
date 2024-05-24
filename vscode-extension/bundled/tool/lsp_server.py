@@ -432,6 +432,7 @@ def log_always(message: str) -> None:
 @LSP_SERVER.command("llm_swarm_ai_improve_file")
 def llm_swarm_ai_improve_file(ls: server.LanguageServer, arguments: Any):
     log_to_output("Running 'llm_swarm_ai_improve_file' command.")
+    log_always("Running 'llm_swarm_ai_improve_file' command.")
     if arguments and "uri" in arguments[0]:
         uri = arguments[0]["uri"]
         document = ls.workspace.get_text_document(uri)
@@ -475,6 +476,9 @@ def apply_text_edits(
     ls: server.LanguageServer, uri: str, edits: list[lsp.TextEdit], version: int
 ):
     log_to_output("Applying text edits to document.")
+    log_always("version: " + str(version))
+    if version is None:
+        version = 1
 
     # Verify and log edits (briefly)
     for edit in edits:
