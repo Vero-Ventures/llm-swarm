@@ -2,6 +2,7 @@
     "name": "llm-swarm",
     "displayName": "LLM Swarm",
     "description": "LLM-Swarm Project",
+    "icon": "gang.png",
     "version": "1.0.0",
     "preview": true,
     "serverInfo": {
