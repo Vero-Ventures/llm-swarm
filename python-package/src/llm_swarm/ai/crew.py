@@ -1,55 +1,34 @@
 import re
 
 from crewai import Crew
-from llm_swarm.ai.agents import create_agent
-from llm_swarm.ai.tasks import create_task
+from llm_swarm.ai.agents import (
+    senior_developer,
+    senior_qa_engineer,
+    software_engineering_manager,
+)
+from llm_swarm.ai.tasks import (
+    determine_requirements_task,
+    refactoring_task,
+    qa_review_task,
+    consistency_check_task,
+)
 
 
 def create_crew(code: str, verbose=0) -> Crew:
     """
     Create a Crew instance with agents and tasks for refactoring code.
     """
-
-    # Create Agents
-    variable_name_agent = create_agent("senior_python_developer")
-    docstring_agent = create_agent("senior_code_documentation_expert")
-    qa_agent = create_agent("senior_python_qa_tester")
-    code_writer_agent = create_agent("senior_code_writer")
-
-    # Create Tasks
-    improve_variable_names_task = create_task(
-        "improve_variable_names",
-        agent=variable_name_agent,
-        code=code,
-    )
-    add_docstrings_task = create_task(
-        "add_docstrings",
-        agent=docstring_agent,
-        context=[improve_variable_names_task],
-    )
-    review_code_task = create_task(
-        "review_code",
-        agent=qa_agent,
-        context=[add_docstrings_task],
-    )
-    write_code_task = create_task(
-        "write_code",
-        agent=code_writer_agent,
-        context=[review_code_task],
-    )
-
     return Crew(
         agents=[
-            variable_name_agent,
-            docstring_agent,
-            qa_agent,
-            code_writer_agent,
+            senior_developer,
+            senior_qa_engineer,
+            software_engineering_manager,
         ],
         tasks=[
-            improve_variable_names_task,
-            add_docstrings_task,
-            review_code_task,
-            write_code_task,
+            determine_requirements_task,
+            refactoring_task,
+            qa_review_task,
+            consistency_check_task,
         ],
         verbose=verbose,
     )
@@ -64,7 +43,7 @@ def extract_code_block(text):
     if match := code_block_pattern.search(text):
         return match.group(1).strip()
     else:
-        return ""
+        return text.strip()
 
 
 def improve_code(code: str, verbose=0) -> str:
