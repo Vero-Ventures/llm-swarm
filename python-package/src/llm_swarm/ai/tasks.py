@@ -93,8 +93,8 @@ consistency_check_task = Task(
         """
     ),
     contexts=[
-        determine_requirements_task, 
-        refactoring_task, 
+        determine_requirements_task,
+        refactoring_task,
         qa_review_task,
     ],
     agent=software_engineering_manager,
