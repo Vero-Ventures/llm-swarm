@@ -1,5 +1,4 @@
 from textwrap import dedent
-
 from crewai import Agent
 from langchain_community.llms import Ollama
 
@@ -9,7 +8,7 @@ llama3 = Ollama(model="llama3")
 code_llama = Ollama(model="codellama")
 
 senior_developer = Agent(
-    role="Senior Developer",
+    role="Senior Software Developer",
     goal=("Refactor software functions to improve efficiency and readability"),
     backstory=dedent(
         """
@@ -31,7 +30,7 @@ senior_qa_engineer = Agent(
     backstory=dedent(
         """
         You are a meticulous software quality assurance engineer
-        specialized in the post-refactoring review. You scrutinize
+        specializing in post-refactoring reviews. You scrutinize
         refactored code for syntax errors, possible regressions, and
         maintainability, ensuring any changes made do not introduce new bugs.
         """
