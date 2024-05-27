@@ -73,6 +73,20 @@ def download_model(model_name: str) -> bool:
         return False
 
 
+TEST_INPUT_CODE = """
+def findMin (L,startIndx):
+    m = L[startIndx]
+    index = startIndx
+    for i in range (startIndx,len(L)):
+        x = L[i]
+        if i < m:
+            i = index
+            m = x
+        else:
+            pass
+    return (m,index)"""
+
+
 def test_model(model_name: str):
     """
     Test the model by invoking it with a sample input.
@@ -80,14 +94,20 @@ def test_model(model_name: str):
     try:
         llm = Ollama(model=model_name)
         print(ollama.show(model_name))
-        print(llm.invoke("The first man on the moon was ..."))
+        print(
+            llm.invoke(
+                "Refactor this code to improve efficiency and readability:\n"
+                + TEST_INPUT_CODE
+            )
+        )
     except Exception:
         print(f"Error testing model {model_name}.")
 
 
 if __name__ == "__main__":
     if start_ollama_server():
-        model_name = "llama3"
-        download_model(model_name)
-        test_model(model_name)
+        download_model("llama3")
+        download_model("codellama")
+        test_model("llama3")
+        test_model("codellama")
         stop_ollama_server()
