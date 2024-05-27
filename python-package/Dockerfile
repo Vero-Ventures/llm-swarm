@@ -4,11 +4,11 @@ FROM python:3.12-slim
 # Set the working directory in the container
 WORKDIR /app
 
-# Copy the pyproject.toml file and poetry.lock file into the working directory
-COPY ../pyproject.toml ../poetry.lock /app/
+# Copy the pyproject.toml and poetry.lock files into the working directory
+COPY pyproject.toml poetry.lock /app/
 
 # Copy the rest of the application code into the container
-COPY . /app
+COPY python-package /app/python-package
 
 # Install build-essential for compiling packages
 RUN apt-get update && apt-get install -y \
@@ -20,8 +20,14 @@ RUN apt-get update && apt-get install -y \
 # Install Poetry
 RUN pip install poetry
 
+# Change to the directory containing the pyproject.toml file
+WORKDIR /app
+
 # Install any needed packages specified in pyproject.toml
 RUN poetry install --no-root
+
+# Set the PYTHONPATH environment variable
+ENV PYTHONPATH="/app/python-package/src"
 
 # Make port 8000 available to the world outside this container
 EXPOSE 8000

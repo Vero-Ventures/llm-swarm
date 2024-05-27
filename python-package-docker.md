@@ -1,4 +1,5 @@
 # Running the docker for python-package
 
 docker build -t my-python-app -f python-package/Dockerfile .
-docker run -p 8000:8000 my-python-app
+
+docker run -it --rm my-python-app -i /path/to/input -o /path/to/output -v
