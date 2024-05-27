@@ -1,7 +1,5 @@
 from textwrap import dedent
-
 from crewai import Task
-
 from llm_swarm.ai.agents import (
     senior_developer,
     senior_qa_engineer,
@@ -11,12 +9,12 @@ from llm_swarm.ai.agents import (
 determine_requirements_task = Task(
     description=dedent(
         """
-        Analyze the provided code to identify any issues that need addressing within each function.
-        Determine the purpose of each function and specify necessary changes in its logic.
+        Analyze the provided code to identify any issues that need 
+        addressing within each function. Determine the purpose of each function 
+        and specify necessary changes in its logic.
         Additionally, identify any style errors that require correction.
         Assess whether the function should be split into multiple functions,
         and if so, outline the new functions.
-        Do not write any code; only document the changes that need to be made.
 
         Original code:
         ------------
@@ -26,8 +24,10 @@ determine_requirements_task = Task(
     agent=software_engineering_manager,
     expected_output=dedent(
         """
-        Your output should be a list of changes needed to improve and refactor the function with proper style.
-        This includes better variable names, added documentation and comments, and adherence to good coding paradigms.
+        Your output should be a list of changes needed to improve and 
+        refactor the function with proper style. This includes better 
+        variable names, added documentation and comments, and adherence to 
+        good coding paradigms.
         Do not include any code.
         """
     ),
@@ -36,11 +36,14 @@ determine_requirements_task = Task(
 refactoring_task = Task(
     description=dedent(
         """
-        Refactor the provided code to enhance its performance, readability, and maintainability
-        based on the requirements determined by the Software Engineering Manager
-        while preserving its core functionality.
-        Ensure the code adheres to best practices, and functions are properly documented.
-        Use standard library tools where applicable to write the code more efficiently.
+        Refactor the provided code to enhance its performance, 
+        readability, and maintainability based on the requirements 
+        determined by the Software Engineering Manager while preserving 
+        its core functionality.
+        Ensure the code adheres to best practices, and functions are 
+        properly documented.
+        Use standard library tools where applicable to write the code 
+        more efficiently.
 
         Original code:
         ------------
@@ -48,7 +51,10 @@ refactoring_task = Task(
         """
     ),
     expected_output=dedent(
-        "Refactored code with documented functions.",
+        """
+        Your output should be refactored code documented functions
+        and nothing else.
+        """
     ),
     agent=senior_developer,
 )
@@ -56,13 +62,18 @@ refactoring_task = Task(
 qa_review_task = Task(
     description=dedent(
         """
-        You are helping to review and improve the refactored code provided by the Senior Developer.
-        Check for logic errors, syntax errors, missing imports, variable naming/casing,
-        mismatched brackets, and security vulnerabilities.
+        You are helping to review and improve the refactored code 
+        provided by the Senior Developer.
+        Correct any logic errors, syntax errors, missing imports, 
+        variable naming/casing, mismatched brackets, and security 
+        vulnerabilities.
         """
     ),
     expected_output=dedent(
-        "QA-reviewed code with documented functions and nothing else."
+        """
+        Your output should be reviewed code with documented functions. 
+        If no changes were made, return the provided code.
+        """
     ),
     agent=senior_qa_engineer,
 )
@@ -70,18 +81,21 @@ qa_review_task = Task(
 consistency_check_task = Task(
     description=dedent(
         """
-        You will ensure that the refactored function provided by Senior QA Engineer
-        remains consistent with the original function's purpose.
+        You will ensure that the refactored function provided by 
+        Senior QA Engineer satisfies all the requirements.
         Confirm that there are no deviations in functionality.
-
-        Original code:
-        ------------
-        {code}
         """
     ),
     expected_output=dedent(
-        "Consistency-checked code with documented functions and nothing else.",
+        """
+        Your output should be consistency-checked code with 
+        documented functions and nothing else.
+        """
     ),
-    contexts=[refactoring_task, qa_review_task],
+    contexts=[
+        determine_requirements_task, 
+        refactoring_task, 
+        qa_review_task,
+    ],
     agent=software_engineering_manager,
 )
