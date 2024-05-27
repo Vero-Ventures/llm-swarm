@@ -24,7 +24,10 @@
 **/.pytest_cache/
 
 # Test outputs #
-**/tests/output/
+**/output/
+
+# Jupyter Notebook #
+.ipynb_checkpoints
 
 # Misc #
 *.vsix
