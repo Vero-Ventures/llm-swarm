@@ -26,10 +26,6 @@ poetry install --no-root
 poetry run pre-commit install
 ```
 
-### Environment Variables
-
-Make a copy of `.env.example`, rename it to `.env`, and add the appropriate values for the environment variables.
-
 ### Node.js package management with `npm`
 
 In terminal navigate to `/vscode-extension` and install the required npm packages by running:
