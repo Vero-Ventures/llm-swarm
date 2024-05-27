@@ -34,7 +34,7 @@ def create_crew(code: str, verbose=0) -> Crew:
     )
 
 
-def extract_code_block(text):
+def extract_code_block(text: str) -> str:
     """
     Extract code block enclosed in triple backticks from text.
     """
