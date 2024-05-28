@@ -185,3 +185,37 @@ There is a bash script in the root folder that runs the AI Crew on a set of test
 ```shell
 ./test.sh
 ```
+
+# Running the extension
+
+### cd into the vscode-extension directory
+
+cd vscode-extension
+
+# Create a python virtual environment for this project in a terminal
+
+python -m venv venv
+
+### Activate the virtual environment on Windows
+
+.\venv\Scripts\activate
+
+### Install nox in the activated environment
+
+python -m pip install nox
+
+### Run nox --session setup
+
+nox --session setup - Note, you may have to install rust for this.
+
+### Optional: Install test dependencies
+
+python -m pip install -r src/test/python_tests/requirements.txt
+
+### Install node packages
+
+npm install
+
+### Start running
+
+Select 'Run' > 'Start Debugging' from the top menu. This should start both the extension and the language server.
