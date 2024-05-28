@@ -9,9 +9,11 @@ cd vscode-extension
 python -m venv venv
 
 ### Activate the virtual environment on Windows
+
 .\venv\Scripts\activate
 
 ### Activate the virtual environment on Mac
+
 source venv/bin/activate
 
 ### Install nox in the activated environment
