@@ -1,12 +1,13 @@
-# AI Agent Swarm for Code Improvement <!-- omit from toc -->
+# CrewsControl <!-- omit from toc -->
+
+A code improvement tool utlizing an AI agent swarm.
 
 - [Project Overview](#project-overview)
   - [Description](#description)
   - [Status](#status)
-- [Installation](#installation)
+- [Project Installation](#project-installation)
   - [Prerequisites](#prerequisites)
   - [Setup](#setup)
-  - [Configuration](#configuration)
 - [Project Structure](#project-structure)
 - [Architecture and Design](#architecture-and-design)
   - [System Overview](#system-overview)
@@ -16,35 +17,36 @@
     - [Similar Projects used as references](#similar-projects-used-as-references)
   - [Modules and Components](#modules-and-components)
 - [Usage](#usage)
-  - [Examples](#examples)
-    - [Python Package as CLI tool](#python-package-as-cli-tool)
-  - [Screenshots](#screenshots)
+  - [Python Package as CLI tool](#python-package-as-cli-tool)
+  - [VSCode extension](#vscode-extension-1)
 - [Testing](#testing)
-- [Deployment](#deployment)
 
 ## Project Overview
 
 ### Description
 
-This project aims to build code improvement software that utlizes an AI agent swarm using remote OR locally hosted models. There are two main components to this project:
+This project aims to build code improvement software that utlizes an AI agent swarm using locally hosted models. There are two main components to this project:
 
-- A Python package that can be used as a CLI to perform AI tasks.
-- A VSCode extension that uses the package to perform tasks based on inputs derived from the IDE.
+- A Python package that can be used as a CLI to perform refactoring tasks.
+- A VSCode extension that uses the Python package to perform tasks based on inputs derived from the IDE.
 
 ### Status
 
-🚧 Current status of the project (where is the project currently at)
+The package can be used as a basic CLI tool to perform refactoring tasks on input code. It can accept the input as a string, or as a file/folder of files. This CLI functionality is primarily for testing purposes as it is not expected
 
-## Installation
+The VSCode extension allows the user to run the Python .
+
+## Project Installation
 
 ### Prerequisites
 
-- [VS Code](https://code.visualstudio.com/)
-- [Python 3.12.\*](https://www.python.org/)
-- [Node.js 16.13.\*](https://nodejs.org/en)
-- [Poetry](https://python-poetry.org/)
-- [Jupyter Notebook](https://jupyter.org/) (if running research notebooks)
-- A machine with a decent GPU (if running models locally) is highly recommended
+- [Python 3.12.\*](https://www.python.org/) for running the Python package (as CLI or via extension)
+- [Poetry](https://python-poetry.org/) for managing Python dependencies
+- [VS Code](https://code.visualstudio.com/) for running the VSCode extension
+- [Node.js 16.13.\*](https://nodejs.org/en) for the VSCode extension
+- [Jupyter Notebook](https://jupyter.org/) for running the research notebook
+
+> **_Note: a machine with a good GPU is highly recommended_**
 
 ### Setup
 
@@ -68,10 +70,6 @@ npm install --save-dev \
   prettier
 ```
 
-### Configuration
-
-(If using online models) Make a copy of `.env.example`, rename it to `.env`, and add the appropriate values for the environment variables.
-
 ## Project Structure
 
 - Explain the directory structure and the purpose of each folder. (Just the ones you've worked on)
@@ -79,110 +77,65 @@ npm install --save-dev \
   > The vscode-extension folder is based on a [VSCode Extension Template](https://github.com/microsoft/vscode-python-tools-extension-template)
 
 ```text
-├── README.md
-├── poetry.lock
-├── pyproject.toml
+├── README.md                       This file.
+├── pyproject.toml                  Poetry configuration file for Python packages.
 ├── python-package
 │   ├── src
-│   │   └── package
+│   │   └── llm-swarm
 │   │       ├── ai
-│   │       │   ├── agents.py               Defines the SWE AI agents in the crew.
-│   │       │   ├── crew.py
-│   │       │   ├── models.py
-│   │       │   └── tasks.py              Defines the tasks that the AI crew can perform.
-│   │       ├── main.py
+│   │       │   ├── agents.py       Defines the AI agents in the crew.
+│   │       │   ├── crew.py         Defines the AI crew.
+│   │       │   ├── models.py       Functions to retrieve models via Ollama.
+│   │       │   └── tasks.py        Defines the tasks that the AI crew can perform.
+│   │       ├── main.py             Main entry point for the Python package.
 │   │       └── utils
-│   │           └── cli.py
+│   │           └── cli.py          CLI tool for running the Python package.
 │   └── tests
-│       └── input
-│           ├── factorial_recursive.py
-│           └── flatten_list.py
-├── test.sh
+│       └── input                   Test input files.
+├── test.sh                         Bash script for testing the Python package.
 └── vscode-extension
     ├── README.md
     ├── bundled
     │   └── tool
-    │       ├── __init__.py
-    │       ├── _debug_server.py
-    │       ├── lsp_jsonrpc.py
-    │       ├── lsp_runner.py
-    │       ├── lsp_server.py
-    │       └── lsp_utils.py
-    ├── common
-    │   └── log
+    │       └── lsp_server.py       Python code called by extension.
     ├── eslint.config.js
-    ├── noxfile.py
-    ├── package-lock.json
-    ├── package.json
-    ├── requirements.in
-    ├── requirements.txt
-    ├── runtime.txt
-    ├── src
-    │   ├── common
-    │   │   ├── constants.ts
-    │   │   ├── log
-    │   │   │   └── logging.ts
-    │   │   ├── python.ts
-    │   │   ├── server.ts
-    │   │   ├── settings.ts
-    │   │   ├── setup.ts
-    │   │   ├── utilities.ts
-    │   │   └── vscodeapi.ts
-    │   ├── extension.ts
-    │   └── test
-    │       └── python_tests
-    │           ├── __init__.py
-    │           ├── lsp_test_client
-    │           │   ├── __init__.py
-    │           │   ├── constants.py
-    │           │   ├── defaults.py
-    │           │   ├── session.py
-    │           │   └── utils.py
-    │           ├── requirements.in
-    │           ├── requirements.txt
-    │           ├── test_data
-    │           │   └── sample1
-    │           │       ├── sample.py
-    │           │       └── sample.unformatted
-    │           └── test_server.py
-    ├── test
-    │   └── python_tests
-    │       ├── lsp_test_client
-    │       └── test_data
-    │           └── sample1
-    ├── tool
-    ├── tsconfig.json
-    └── webpack.config.js
+    ├── noxfile.py                  Configuration file for Nox.
+    ├── package.json                Node.js configuration file.
+    ├── requirements.in             Python package requirements.
+    └── src
+        └── extension.ts            Main entry point for the VSCode extension.
+
 ```
 
 ## Architecture and Design
 
 ### System Overview
 
-High-level architecture diagram and description. Database Diagrams and ERDs.
-
 ```mermaid
 ---
 title: VSCode Extension Architecture
 ---
-flowchart LR
+flowchart TB
 
-subgraph vscode_extension [VSCode Extension]
+subgraph vscode_extension [VSCode IDE]
 code[Current file / Selected code]
 python_package --> code
 end
 code --> python_package
-subgraph python_package [ Python package]
+subgraph python_package [ LLM Swarm]
+agent1[Variable Name Agent]
+agent2[Docstring Agent]
+agent3[QA Agent]
+agent4[Code Writer Agent]
 agent1 --> agent2
-agent2--> agent3
-agent3
+agent2 --> agent3
+agent3 --> agent4
+
 end
 
 ```
 
 ### Technologies Used
-
-List of main technologies, frameworks, and libraries.
 
 #### Python package
 
@@ -211,35 +164,21 @@ Breakdown of major modules and their responsibilities.
 
 ## Usage
 
-### Examples
-
-Examples of how to use the main features. (Just the ones you've worked on)
-
-#### Python Package as CLI tool
+### Python Package as CLI tool
 
 ```shell
-poetry run cli  # use -h to see args
+# use -h to see args
+poetry run cli
 ```
 
 Alternatively, enter the virtual environment with `poetry shell` and then run `python main.py`, or simply run `poetry run python main.py`.
 
-There is also a bash script in the root folder that can be used for testing purposes. Run it with:
+### VSCode extension
+
+## Testing
+
+There is a bash script in the root folder that runs the AI Crew on a set of test files found in `/python-package/tests/input`. Run it with:
 
 ```shell
 ./test.sh
 ```
-
-### Screenshots
-
-(Optional) Visuals to help understand the usage better.
-
-## Testing
-
-- Test Setup: Instructions for setting up the testing environment.
-- Running Tests: How to run the tests and interpret the results.
-- Test Coverage: Information on test coverage and any tools used.
-
-## Deployment
-
-- Deployment Instructions: Step-by-step guide on how to deploy the project.
-- Environment Configurations: Configuration settings for different environments (development, staging, production).
