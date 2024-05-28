@@ -26,10 +26,11 @@ A code improvement tool utlizing an AI agent swarm.
 
 ### Description
 
-This project aims to build code improvement software that utlizes an AI agent swarm using locally hosted models. There are two main components to this project:
+This project aims to build code improvement software that utlizes an AI agent swarm using locally hosted models. There are three components to this project:
 
 - A Python package that can be used as a CLI to perform refactoring tasks.
 - A VSCode extension that uses the Python package to perform tasks based on inputs derived from the IDE.
+- A [research notebook](research/llm_swarm.ipynb) that documents the process of building the AI agent swarm.
 
 ### Status
 
@@ -49,7 +50,7 @@ The VSCode extension allows the user to run the Python .
 
 > **_Note: a machine with a good GPU is highly recommended_**
 
-### Setup
+### Development Setup
 
 In terminal, in the root directory of the project, install the Python dependencies and pre-commit hooks by running the following commands:
 
@@ -58,9 +59,7 @@ poetry install --no-root
 poetry run pre-commit install
 ```
 
-### Node.js package management with `npm`
-
-In terminal navigate to `/vscode-extension` and install the required npm packages by running:
+Then navigate to `/vscode-extension` and install the required npm packages:
 
 ```shell
 cd vscode-extension
@@ -74,10 +73,6 @@ npm install --save-dev \
 ```
 
 ## Project Structure
-
-- Explain the directory structure and the purpose of each folder. (Just the ones you've worked on)
-- Mention any key files and their functionalities.
-  > The vscode-extension folder is based on a [VSCode Extension Template](https://github.com/microsoft/vscode-python-tools-extension-template)
 
 ```text
 ├── README.md                       This file.
@@ -95,6 +90,9 @@ npm install --save-dev \
 │   │           └── cli.py          CLI tool for running the Python package.
 │   └── tests
 │       └── input                   Test input files.
+├── research
+│   ├── README.md                   Research documentation.
+│   └── llm_swarm.ipynb             Jupyter notebook documenting the AI agent swarm.
 ├── test.sh                         Bash script for testing the Python package.
 └── vscode-extension
     ├── README.md
@@ -109,6 +107,8 @@ npm install --save-dev \
         └── extension.ts            Main entry point for the VSCode extension.
 
 ```
+
+Note: The `vscode-extension` folder is based on a [VSCode Extension Template](https://github.com/microsoft/vscode-python-tools-extension-template) - only modified files are included in this diagram.
 
 ## Architecture and Design
 
