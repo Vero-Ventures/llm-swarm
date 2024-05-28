@@ -125,11 +125,11 @@ code[Current file / Selected code]
 python_package --> code
 end
 code --> python_package
-subgraph python_package [ LLM Swarm]
-agent1[Variable Name Agent]
-agent2[Docstring Agent]
+subgraph python_package [LLM Swarm]
+agent1[Planning Agent]
+agent2[Code Refactor Agent]
 agent3[QA Agent]
-agent4[Code Writer Agent]
+agent4[Revision Agent]
 agent1 --> agent2
 agent2 --> agent3
 agent3 --> agent4
