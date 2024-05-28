@@ -55,7 +55,13 @@ def main() -> None:
         process_file(**vars(args))
 
     elif args.in_path.is_dir():
+        start_time = time.perf_counter()
+
         process_directory(**vars(args))
+
+        if args.verbose:
+            end_time = time.perf_counter()
+            print(f"\nTotal time for all files: {end_time - start_time:.2f} seconds")
 
 
 if __name__ == "__main__":

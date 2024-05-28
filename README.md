@@ -8,6 +8,7 @@ A code improvement tool utlizing an AI agent swarm.
 - [Project Installation](#project-installation)
   - [Prerequisites](#prerequisites)
   - [Setup](#setup)
+  - [Node.js package management with `npm`](#nodejs-package-management-with-npm)
 - [Project Structure](#project-structure)
 - [Architecture and Design](#architecture-and-design)
   - [System Overview](#system-overview)
@@ -57,7 +58,9 @@ poetry install --no-root
 poetry run pre-commit install
 ```
 
-Then navigate to the `vscode-extension` folder and install the required `npm` packages:
+### Node.js package management with `npm`
+
+In terminal navigate to `/vscode-extension` and install the required npm packages by running:
 
 ```shell
 cd vscode-extension
