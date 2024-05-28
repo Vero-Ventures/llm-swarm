@@ -219,3 +219,7 @@ npm install
 ### Start running
 
 Select 'Run' > 'Start Debugging' from the top menu. This should start both the extension and the language server.
+
+## Developing the extension
+
+See the README.md in the vscode-extension directory for more information on developing the extension.
