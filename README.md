@@ -41,18 +41,18 @@ The VSCode extension simply provides a command, available via right-clicking in 
 
 ### Prerequisites
 
-- [Python 3.12.\*](https://www.python.org/) for running the Python package (as CLI or via extension)
+- [Python (3.12.\*)](https://www.python.org/) for running the Python package (as CLI or via extension)
 - [Poetry](https://python-poetry.org/) for managing Python dependencies
 - [Ollama](https://ollama.com/) for interfacing with AI models
 - [VS Code](https://code.visualstudio.com/) for running the VSCode extension
-- [Node.js 16.13.\*](https://nodejs.org/en) for the VSCode extension
+- [Node.js](https://nodejs.org/en) for the VSCode extension
 - [Jupyter Notebook](https://jupyter.org/) for running the research notebook
 
 > **_Note: a machine with a good GPU is highly recommended_**
 
 ### Setup AI Models
 
-To use the AI models, you will need to have Ollama installed and running. Follow the instructions on the [Ollama website](https://ollama.com/) to install Ollama on your machine.
+Ollama is required to use the package or extension. Follow the instructions on the [Ollama website](https://ollama.com/) to install it on your machine.
 
 Then run the following command retrieve the models and store them locally:
 
@@ -83,7 +83,7 @@ source venv/bin/activate
 .\venv\Scripts\activate
 ```
 
-Install [nox](https://github.com/wntrblm/nox) in the activated environment:
+Install [nox](https://github.com/wntrblm/nox) in the activated environment, then run nox to install all python package dependencies (into `vscode-extension/bundled/libs`):
 
 ```shell
 python -m pip install nox
