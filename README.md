@@ -7,7 +7,8 @@ A code improvement tool utlizing an AI agent swarm.
   - [Status](#status)
 - [Project Installation](#project-installation)
   - [Prerequisites](#prerequisites)
-  - [Development Setup](#development-setup)
+  - [Setup AI Models](#setup-ai-models)
+  - [Setup Development Environment](#setup-development-environment)
 - [Project Structure](#project-structure)
 - [Architecture and Design](#architecture-and-design)
   - [System Overview](#system-overview)
@@ -26,15 +27,15 @@ A code improvement tool utlizing an AI agent swarm.
 
 This project aims to build code improvement software that utlizes an AI agent swarm using locally hosted models. There are three components to this project:
 
-- A Python package that can be used as a CLI to perform refactoring tasks.
-- A VSCode extension that uses the Python package to perform tasks based on inputs derived from the IDE.
+- A Python package that can be used as a CLI to perform refactoring on input code.
+- A VSCode extension that uses the Python package to refactor code selected in the IDE.
 - A [research notebook](research/llm_swarm.ipynb) that documents the process of building the AI agent swarm.
 
 ### Status
 
-The package can be used as a basic CLI tool to perform refactoring tasks on input code. It can accept the input as a string, or as a file/folder of files. This CLI functionality is primarily for testing purposes as it is not expected
+The package can be used as a basic CLI tool to perform refactoring tasks on input code. It can accept the input as a string, or as a file/folder of files. This CLI functionality is primarily for testing purposes as it is not expected to be used directly by end-users (and will thus not be made available via PyPI).
 
-The VSCode extension allows the user to run the AI agents on the currently open file or selected text in the IDE.
+The VSCode extension simply provides a command, available via right-clicking in a code window or via the Command Palette, to perform the AI refactoring on specified code. The extension is still in development and is not yet available for public use.
 
 ## Project Installation
 
@@ -42,15 +43,27 @@ The VSCode extension allows the user to run the AI agents on the currently open 
 
 - [Python 3.12.\*](https://www.python.org/) for running the Python package (as CLI or via extension)
 - [Poetry](https://python-poetry.org/) for managing Python dependencies
+- [Ollama](https://ollama.com/) for interfacing with AI models
 - [VS Code](https://code.visualstudio.com/) for running the VSCode extension
 - [Node.js 16.13.\*](https://nodejs.org/en) for the VSCode extension
 - [Jupyter Notebook](https://jupyter.org/) for running the research notebook
 
 > **_Note: a machine with a good GPU is highly recommended_**
 
-### Development Setup
+### Setup AI Models
 
-In terminal, install the Python dependencies and pre-commit hooks by running the following commands:
+To use the AI models, you will need to have Ollama installed and running. Follow the instructions on the [Ollama website](https://ollama.com/) to install Ollama on your machine.
+
+Then run the following command retrieve the models and store them locally:
+
+```shell
+ollama pull llama3
+ollama pull codellama
+```
+
+### Setup Development Environment
+
+Install the Python dependencies and pre-commit hooks by running the following commands:
 
 ```shell
 poetry install --no-root
@@ -133,7 +146,7 @@ For more information on building and developing this extension, refer to the [VS
     ├── bundled
     │   └── tool
     │       └── lsp_server.py       Python code called by extension.
-    ├── eslint.config.js
+    ├── eslint.config.js            ESLint configuration file.
     ├── noxfile.py                  Configuration file for Nox.
     ├── package.json                Node.js configuration file.
     ├── requirements.in             Python package requirements.
@@ -196,6 +209,10 @@ end
 - Hierarchical Autonomous Agent Swarm (HAAS): <https://github.com/daveshap/OpenAI_Agent_Swarm>
 
 ## Usage
+
+Ensure the models are stored locally - see [Ollama Setup](#ollama--setup) for instructions.
+
+The Ollama server must be running to use either the package or extension. It can be started either via the Ollama app, or via the terminal command `ollama serve`.
 
 ### Python Package as CLI tool
 
