@@ -7,19 +7,17 @@ A code improvement tool utlizing an AI agent swarm.
   - [Status](#status)
 - [Project Installation](#project-installation)
   - [Prerequisites](#prerequisites)
-  - [Setup](#setup)
-  - [Node.js package management with `npm`](#nodejs-package-management-with-npm)
+  - [Development Setup](#development-setup)
 - [Project Structure](#project-structure)
 - [Architecture and Design](#architecture-and-design)
   - [System Overview](#system-overview)
   - [Technologies Used](#technologies-used)
-    - [Python package](#python-package)
-    - [VSCode Extension](#vscode-extension)
+    - [Python package development](#python-package-development)
+    - [VSCode Extension development](#vscode-extension-development)
     - [Similar Projects used as references](#similar-projects-used-as-references)
-  - [Modules and Components](#modules-and-components)
 - [Usage](#usage)
   - [Python Package as CLI tool](#python-package-as-cli-tool)
-  - [VSCode extension](#vscode-extension-1)
+  - [VSCode extension](#vscode-extension)
 - [Testing](#testing)
 
 ## Project Overview
@@ -36,7 +34,7 @@ This project aims to build code improvement software that utlizes an AI agent sw
 
 The package can be used as a basic CLI tool to perform refactoring tasks on input code. It can accept the input as a string, or as a file/folder of files. This CLI functionality is primarily for testing purposes as it is not expected
 
-The VSCode extension allows the user to run the Python .
+The VSCode extension allows the user to run the AI agents on the currently open file or selected text in the IDE.
 
 ## Project Installation
 
@@ -52,25 +50,61 @@ The VSCode extension allows the user to run the Python .
 
 ### Development Setup
 
-In terminal, in the root directory of the project, install the Python dependencies and pre-commit hooks by running the following commands:
+In terminal, install the Python dependencies and pre-commit hooks by running the following commands:
 
 ```shell
 poetry install --no-root
 poetry run pre-commit install
 ```
 
-Then navigate to `/vscode-extension` and install the required npm packages:
+Then navigate to the vscode-extension directory, and create and activate a virtual environment:
 
 ```shell
 cd vscode-extension
-npm install --save-dev \
-  typescript \
-  eslint@8.57.0 \
-  @typescript-eslint/parser \
-  @typescript-eslint/eslint-plugin \
-  globals \
-  prettier
+python -m venv venv
+
+# On MacOS/Linux
+source venv/bin/activate
+
+# On Windows
+.\venv\Scripts\activate
 ```
+
+Install [nox](https://github.com/wntrblm/nox) in the activated environment:
+
+```shell
+python -m pip install nox
+nox --session setup
+```
+
+**_Note: If this fails, you may have to install `rust`:_**
+
+```shell
+# Install Rust using rustup
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+
+# Follow the on-screen instructions to complete the installation
+
+# Add Cargo's bin directory to your PATH
+# For zsh
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.zshrc
+source ~/.zshrc
+
+# For bash
+echo 'export PATH="$HOME/.cargo/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify Rust installation
+rustc --version
+```
+
+Finally, install `node` packages:
+
+```shell
+npm install
+```
+
+For more information on building and developing this extension, refer to the [VS Code python tools extension README](https://github.com/microsoft/vscode-python-tools-extension-template/blob/main/README.md).
 
 ## Project Structure
 
@@ -140,14 +174,14 @@ end
 
 ### Technologies Used
 
-#### Python package
+#### Python package development
 
 - Python
 - Poetry for package management
 - Ollama
 - CrewAI
 
-#### VSCode Extension
+#### VSCode Extension development
 
 - TypeScript
 - Node.js
@@ -161,10 +195,6 @@ end
 - ACE Framework: <https://github.com/daveshap/ACE_Framework>
 - Hierarchical Autonomous Agent Swarm (HAAS): <https://github.com/daveshap/OpenAI_Agent_Swarm>
 
-### Modules and Components
-
-Breakdown of major modules and their responsibilities.
-
 ## Usage
 
 ### Python Package as CLI tool
@@ -174,9 +204,19 @@ Breakdown of major modules and their responsibilities.
 poetry run cli
 ```
 
-Alternatively, enter the virtual environment with `poetry shell` and then run `python main.py`, or simply run `poetry run python main.py`.
+Alternatively, run the script directly with `poetry run python main.py`.
 
 ### VSCode extension
+
+To run the extension in development, open the project in VSCode and select `Run > Start Debugging` from the top menu. This should open a new VSCode window where one can open some files and run the extension on them.
+
+To build the extension, run the following command in the `vscode-extension` directory:
+
+```shell
+npx vsce package
+```
+
+This will create a `.vsix` file that can be installed in VSCode like a regular extension.
 
 ## Testing
 
@@ -185,41 +225,3 @@ There is a bash script in the root folder that runs the AI Crew on a set of test
 ```shell
 ./test.sh
 ```
-
-# Running the extension
-
-### cd into the vscode-extension directory
-
-cd vscode-extension
-
-# Create a python virtual environment for this project in a terminal
-
-python -m venv venv
-
-### Activate the virtual environment on Windows
-
-.\venv\Scripts\activate
-
-### Install nox in the activated environment
-
-python -m pip install nox
-
-### Run nox --session setup
-
-nox --session setup - Note, you may have to install rust for this.
-
-### Optional: Install test dependencies
-
-python -m pip install -r src/test/python_tests/requirements.txt
-
-### Install node packages
-
-npm install
-
-### Start running
-
-Select 'Run' > 'Start Debugging' from the top menu. This should start both the extension and the language server.
-
-## Developing the extension
-
-See the README.md in the vscode-extension directory for more information on developing the extension.
