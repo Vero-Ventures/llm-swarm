@@ -9,6 +9,7 @@ A code improvement tool utlizing an AI agent swarm.
   - [Prerequisites](#prerequisites)
   - [Setup AI Models](#setup-ai-models)
   - [Setup Development Environment](#setup-development-environment)
+  - [Building the package and extension](#building-the-package-and-extension)
 - [Project Structure](#project-structure)
 - [Architecture and Design](#architecture-and-design)
   - [System Overview](#system-overview)
@@ -117,6 +118,27 @@ Finally, install `node` packages:
 npm install
 ```
 
+### Building the package and extension
+
+To build the Python package, run the following command in the project root directory:
+
+```shell
+poetry build
+```
+
+This will create a `.tar.gz` file in the `dist` directory. The package can be then be installed via `pip`.
+
+To build the VSCode extension, first ensure the latest version of the Python package is built and stored in the `vscode-extension/bundled/llm-swarm-build` directory. Then run the following command in the `vscode-extension` directory:
+
+```shell
+echo "Updating bundled package dependencies..."
+nox --session setup
+echo "Building VSCode extension..."
+npx vsce package
+```
+
+This will create a `.vsix` file that can be installed in VSCode like a regular extension.
+
 For more information on building and developing this extension, refer to the [VS Code python tools extension README](https://github.com/microsoft/vscode-python-tools-extension-template/blob/main/README.md).
 
 ## Project Structure
@@ -144,6 +166,7 @@ For more information on building and developing this extension, refer to the [VS
 └── vscode-extension
     ├── README.md
     ├── bundled
+    │   ├── llm-swarm-build         Python package builds (llm_swarm-*.tar.gz).
     │   └── tool
     │       └── lsp_server.py       Python code called by extension.
     ├── eslint.config.js            ESLint configuration file.
@@ -227,13 +250,7 @@ Alternatively, run the script directly with `poetry run python main.py`.
 
 To run the extension in development, open the project in VSCode and select `Run > Start Debugging` from the top menu. This should open a new VSCode window where one can open some files and run the extension on them.
 
-To build the extension, run the following command in the `vscode-extension` directory:
-
-```shell
-npx vsce package
-```
-
-This will create a `.vsix` file that can be installed in VSCode like a regular extension.
+See the extension [README](vscode-extension/README.md) for details on using the extension.
 
 ## Testing
 
