@@ -49,7 +49,7 @@ from pygls import server, uris, workspace
 # log all available python packages
 # print("Available python packages: ", os.listdir(sys.path[0]))
 
-from package.ai.crew import (
+from llm_swarm.ai.crew import (
     improve_code,
 )  # Adjust the import based on your package structure
 

@@ -1,5 +1,6 @@
 import json
 import os
+import glob
 import pathlib
 import urllib.request as url_lib
 from typing import List
@@ -108,9 +109,22 @@ def _setup_template_environment(session: nox.Session) -> None:
     _install_bundle(session)
 
 
+def _get_latest_version_path(pattern):
+    files = glob.glob(pattern)
+    files.sort(key=os.path.getmtime, reverse=True)
+    return files[0] if files else None
+
+
 @nox.session(python="3.12")
 def setup(session: nox.Session) -> None:
     """Sets up the template for development."""
+
+    # Ensure custom package is built
+    package_dir = "bundled/llm-swarm-build/"
+    latest_file_path = _get_latest_version_path(f"{package_dir}llm_swarm-*.tar.gz")
+    if not latest_file_path:
+        raise Exception(f"llm_swarm package not found in {package_dir}.")
+
     # Ensure pip is installed and upgraded
     session.run("python", "-m", "ensurepip", external=True)
     session.run("pip", "install", "--upgrade", "pip", external=True)
@@ -122,7 +136,7 @@ def setup(session: nox.Session) -> None:
         "pip",
         "install",
         "--target=./bundled/libs",
-        "bundled/llm-swarm-build/llm_swarm-0.1.0.tar.gz",
+        latest_file_path,
         external=True,
     )
 
