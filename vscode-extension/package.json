@@ -1,7 +1,8 @@
 {
-    "name": "llm-swarm",
-    "displayName": "LLM Swarm",
-    "description": "LLM-Swarm Project",
+    "name": "crewscontrol",
+    "displayName": "CrewsControl",
+    "description": "Conde Improvement Using An LLM Swarm",
+    "icon": "gang.png",
     "version": "1.0.0",
     "preview": true,
     "serverInfo": {
@@ -28,7 +29,7 @@
         "LLM"
     ],
     "engines": {
-        "vscode": "^1.78.0"
+        "vscode": "^1.89.0"
     },
     "categories": [
         "Programming Languages",
@@ -61,7 +62,7 @@
         "format-check": "prettier --check 'src/**/*.ts' 'build/**/*.yml' '.github/**/*.yml'",
         "test": "node ./out/test/runTest.js",
         "eslint": "eslint --config eslint.config.js --no-ignore src/**/*.{js,jsx,ts,tsx}",
-        "vsce-package": "vsce package -o llm-swarm.vsix"
+        "vsce-package": "vsce package -o crewscontrol.vsix"
     },
     "contributes": {
         "configuration": {
@@ -134,11 +135,30 @@
                 "command": "llm-swarm.restart"
             },
             {
-                "title": "Improve Code",
+                "title": "CrewsControl: Improve File",
                 "category": "LLM Swarm",
-                "command": "llm-swarm.improveCode"
+                "command": "llm-swarm.improveFile"
+            },
+            {
+                "title": "CrewsControl: Improve Selection",
+                "category": "LLM Swarm",
+                "command": "llm-swarm.improveSelection"
             }
-        ]
+        ],
+        "menus": {
+            "editor/context": [
+                {
+                    "command": "llm-swarm.improveFile",
+                    "when": "editorFocus",
+                    "group": "navigation"
+                },
+                {
+                    "command": "llm-swarm.improveSelection",
+                    "when": "editorHasSelection",
+                    "group": "navigation"
+                }
+            ]
+        }
     },
     "dependencies": {
         "@vscode/python-extension": "^1.0.5",

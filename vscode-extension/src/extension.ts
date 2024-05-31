@@ -101,6 +101,49 @@ export async function activate(
     );
   };
 
+  // Create the status bar item
+  const statusBarItem = vscode.window.createStatusBarItem(
+    vscode.StatusBarAlignment.Right,
+    100,
+  );
+  statusBarItem.text = "$(zap) LLM Swarm AI";
+  statusBarItem.tooltip = "Improve code with LLM Swarm";
+  statusBarItem.command = "llm-swarm.showQuickPick";
+  statusBarItem.show();
+
+  context.subscriptions.push(statusBarItem);
+
+  interface CommandQuickPickItem extends vscode.QuickPickItem {
+    command: string;
+  }
+
+  // Register the quick pick command
+  context.subscriptions.push(
+    vscode.commands.registerCommand("llm-swarm.showQuickPick", async () => {
+      const quickPick = vscode.window.createQuickPick<CommandQuickPickItem>();
+      quickPick.items = [
+        {
+          label: "$(zap)$(file-code) Improve File",
+          description: "Improve the entire file with LLM Swarm",
+          command: "llm-swarm.improveFile",
+        },
+        {
+          label: "$(zap)$(edit) Improve Selection",
+          description: "Improve the selected code with LLM Swarm",
+          command: "llm-swarm.improveSelection",
+        },
+      ];
+      quickPick.onDidChangeSelection((selection) => {
+        if (selection[0]) {
+          vscode.commands.executeCommand(selection[0].command);
+          quickPick.hide();
+        }
+      });
+      quickPick.onDidHide(() => quickPick.dispose());
+      quickPick.show();
+    }),
+  );
+
   context.subscriptions.push(
     onDidChangePythonInterpreter(async () => {
       await runServer();
@@ -113,24 +156,74 @@ export async function activate(
     registerCommand(`${serverId}.restart`, async () => {
       await runServer();
     }),
-    registerCommand("llm-swarm.improveCode", async () => {
+    registerCommand("llm-swarm.improveFile", async () => {
       const editor = vscode.window.activeTextEditor;
       if (editor) {
         const document = editor.document;
         const uri = document.uri.toString();
 
+        const loadingMessage = vscode.window.setStatusBarMessage(
+          "$(gear~spin) Improving code... $(gear~spin)",
+        );
+
         try {
           await lsClient?.sendRequest("workspace/executeCommand", {
-            command: "llm_swarm_ai_fix",
+            command: "llm_swarm_ai_improve_file",
             arguments: [{ uri }],
           });
           vscode.window.showInformationMessage(
-            "Code improvement completed successfully.",
+            "Code improvement completed successfully. 🎉",
           );
         } catch (error) {
           vscode.window.showErrorMessage(
             "Error occurred while improving code: " + (error as Error).message,
           );
+        } finally {
+          loadingMessage.dispose();
+        }
+      } else {
+        vscode.window.showErrorMessage("No active editor found.");
+      }
+    }),
+    registerCommand("llm-swarm.improveSelection", async () => {
+      const editor = vscode.window.activeTextEditor;
+      if (editor) {
+        const document = editor.document;
+        const uri = document.uri.toString();
+        const selection = editor.selection;
+
+        const loadingMessage = vscode.window.setStatusBarMessage(
+          "$(gear~spin) Improving selected code... $(gear~spin)",
+        );
+
+        try {
+          await lsClient?.sendRequest("workspace/executeCommand", {
+            command: "llm_swarm_ai_improve_selection",
+            arguments: [
+              {
+                uri,
+                range: {
+                  start: {
+                    line: selection.start.line,
+                    character: selection.start.character,
+                  },
+                  end: {
+                    line: selection.end.line,
+                    character: selection.end.character,
+                  },
+                },
+              },
+            ],
+          });
+          vscode.window.showInformationMessage(
+            "Code improvement completed successfully. 🎉",
+          );
+        } catch (error) {
+          vscode.window.showErrorMessage(
+            "Error occurred while improving code: " + (error as Error).message,
+          );
+        } finally {
+          loadingMessage.dispose();
         }
       } else {
         vscode.window.showErrorMessage("No active editor found.");
