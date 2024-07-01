@@ -19,7 +19,7 @@ ollama = "^0.2.0"
 [tool.poetry.group.dev.dependencies]
 jupyter = "^1.0.0"
 pre-commit = "^3.7.0"
-ruff = "^0.4.3"
+ruff = ">=0.4.3,<0.6.0"
 
 [tool.poetry.scripts]
 cli = "llm_swarm.main:main"
